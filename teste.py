@@ -10,12 +10,12 @@ def figma_para_tela(x_figma, y_figma):
 pygame.init()
 
 # Criando a janela
-largura_tela = 800
-altura_tela = 600
+largura_tela = 720
+altura_tela = 512
 tela = pygame.display.set_mode((largura_tela, altura_tela))
 
 # Tamanhos de fonte
-fonte_principal_tamanho_base = int(44 * largura_tela / 1024)  # Tamanho de texto de botões
+fonte_principal_tamanho_base = int(44 * altura_tela / 1024)  # Tamanho de texto de botões
 fonte_principal_tamanho_titulo = fonte_principal_tamanho_base * 5   # Tamanho do título do jogo
 
 # Fontes
@@ -23,10 +23,14 @@ fonte_botao = pygame.font.Font("IrishGrover-Regular.ttf", fonte_principal_tamanh
 fonte_titulo = pygame.font.Font("IrishGrover-Regular.ttf", fonte_principal_tamanho_titulo)
 
 # Cores
-LARANJA = (250, 164, 31)
-AZUL_CLARO = (30, 180, 195)
-BRANCO = (255, 255, 255)
-PRETO = (0, 0, 0)
+LARANJA = (250, 164, 31) # FAA41F
+AZUL_CLARO = (30, 180, 195) # 1EB4C3
+BRANCO = (255, 255, 255) # FFFFFF
+BRANCO_FUNDO = (245, 235, 221) # F5EBDD
+PRETO = (0, 0, 0) # 000000
+VINHO = (132, 64, 69) # 844045
+SALMAO = (200, 126, 131) # C87E83
+VERMELHO = (230, 57, 70) # E63946
 
 # Definindo título e ícone da janela
 pygame.display.set_caption("Eval")
@@ -39,10 +43,11 @@ if icone_foi_criado:
 
 # Classe Botão
 class Botao():
-    def __init__(self, texto, pos, tamanho, fonte, cor_padrao, cor_texto, cor_hover):
-        self.rect = pygame.Rect(pos, tamanho)
+    def __init__(self, texto, pos, cor_padrao, cor_texto, cor_hover):
+        self.fonte = fonte_botao
+        self.tamanho = figma_para_tela(340, 74)
+        self.rect = pygame.Rect(pos, self.tamanho)
         self.texto = texto
-        self.fonte = fonte
         self.cor_padrao = cor_padrao
         self.cor_texto = cor_texto
         self.cor_hover = cor_hover
@@ -60,25 +65,53 @@ class Botao():
         texto_rect = texto_surf.get_rect(center=self.rect.center)
         tela.blit(texto_surf, texto_rect)
 
-# Instanciando botões
+# Botões
 ## Botão Jogar
-texto_botao_jogar = "Jogar"
-pos_botao_jogar = figma_para_tela(51, 453)
-tamanho_botao_jogar = figma_para_tela(340, 74)
-fonte_botao_jogar = fonte_botao
-cor_padrao_botao_jogar = LARANJA
-cor_texto_botao_jogar = PRETO
-cor_hover_botao_jogar = BRANCO
-
 botao_jogar = Botao(
-    texto=texto_botao_jogar,
-    pos=pos_botao_jogar,
-    tamanho=tamanho_botao_jogar,
-    fonte=fonte_botao_jogar,
-    cor_padrao=cor_padrao_botao_jogar,
-    cor_texto=cor_texto_botao_jogar,
-    cor_hover=cor_hover_botao_jogar
+    texto="Jogar",
+    pos=figma_para_tela(51, 453),
+    cor_padrao=LARANJA,
+    cor_texto=PRETO,
+    cor_hover=BRANCO
+    )
+
+## Botão Questões
+botao_questoes = Botao(
+    texto="Questões",
+    pos=figma_para_tela(51, 560),
+    cor_padrao=VINHO,
+    cor_texto=PRETO,
+    cor_hover=BRANCO
+    )
+
+## Botão Estatísticas
+botao_estatisticas = Botao(
+    texto="Estatísticas",
+    pos=figma_para_tela(51, 667),
+    cor_padrao=AZUL_CLARO,
+    cor_texto=PRETO,
+    cor_hover=BRANCO
 )
+
+## Botão Configurações
+botao_configuracoes = Botao(
+    texto="Configurações",
+    pos=figma_para_tela(51, 774),
+    cor_padrao=SALMAO,
+    cor_texto=PRETO,
+    cor_hover=BRANCO
+)
+
+botao_sair = Botao(
+    texto="Sair",
+    pos=figma_para_tela(51, 881),
+    cor_padrao=VERMELHO,
+    cor_texto=PRETO,
+    cor_hover=BRANCO
+)
+
+botoes = [botao_jogar, botao_questoes, botao_estatisticas,
+botao_configuracoes, botao_sair]
 
 # Eventos da janela
 execucao = True
@@ -87,10 +120,11 @@ while execucao:
         if evento.type == pygame.QUIT:
             execucao = False
 
-    tela.fill((100, 0, 0))
+    tela.fill((BRANCO_FUNDO))
+    tela.fill(VERMELHO, ((0, 0), figma_para_tela(1440, 404)))
 
-    botao_jogar.atualizar_hover()
-
-    botao_jogar.draw(tela)
+    for botao in botoes:
+        botao.atualizar_hover()
+        botao.draw(tela)
 
     pygame.display.update()
