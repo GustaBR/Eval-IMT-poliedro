@@ -1,6 +1,6 @@
 import pygame
 
-# Retorna a posição do elemento baseado nas telas do figma
+# Retorna a posição do elemento na tela com base no figma
 def figma_para_tela(x_figma, y_figma):
     x = int(x_figma * largura_tela / 1440)
     y = int(y_figma * altura_tela / 1024)
@@ -15,8 +15,8 @@ altura_tela = 512
 tela = pygame.display.set_mode((largura_tela, altura_tela))
 
 # Tamanhos de fonte
-fonte_principal_tamanho_base = int(44 * altura_tela / 1024)  # Tamanho de texto de botões
-fonte_principal_tamanho_titulo = fonte_principal_tamanho_base * 5   # Tamanho do título do jogo
+fonte_principal_tamanho_base = int(44 * altura_tela / 1024) # Tamanho de texto de botões
+fonte_principal_tamanho_titulo = fonte_principal_tamanho_base * 5 # Tamanho do título do jogo
 
 # Fontes
 fonte_botao = pygame.font.Font("IrishGrover-Regular.ttf", fonte_principal_tamanho_base)
@@ -113,6 +113,19 @@ botao_sair = Botao(
 botoes = [botao_jogar, botao_questoes, botao_estatisticas,
 botao_configuracoes, botao_sair]
 
+# Logo EVAL
+letras_logo = [
+    ("E", AZUL_CLARO),
+    ("V", LARANJA),
+    ("A", LARANJA),
+    ("L", AZUL_CLARO)
+]
+espacamentos = {
+    "E": -10,
+    "padrao": 1
+
+}
+
 # Eventos da janela
 execucao = True
 while execucao:
@@ -122,6 +135,16 @@ while execucao:
 
     tela.fill((BRANCO_FUNDO))
     tela.fill(VERMELHO, ((0, 0), figma_para_tela(1440, 404)))
+    
+    x_logo, y_logo = figma_para_tela(49, 55)
+
+    for i, (letra, cor) in enumerate(letras_logo):
+        parte = fonte_titulo.render(letra, True, cor)
+        tela.blit(parte, (x_logo, y_logo))
+        x_logo += parte.get_width()
+        
+        if i < len(letras_logo) - 1:
+            x_logo += espacamentos.get(letra, espacamentos["padrao"])
 
     for botao in botoes:
         botao.atualizar_hover()
