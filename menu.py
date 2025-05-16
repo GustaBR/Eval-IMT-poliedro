@@ -11,7 +11,8 @@ class Menu():
             pos=config.figma_para_tela(51, 453),
             cor_padrao=config.LARANJA,
             cor_texto=config.PRETO,
-            cor_hover=config.BRANCO
+            cor_hover=config.BRANCO,
+            fonte=config.fonte_botao
             )
 
         ## Botão Questões
@@ -20,7 +21,8 @@ class Menu():
             pos=config.figma_para_tela(51, 560),
             cor_padrao=config.VINHO,
             cor_texto=config.PRETO,
-            cor_hover=config.BRANCO
+            cor_hover=config.BRANCO,
+            fonte=config.fonte_botao
             )
 
         ## Botão Estatísticas
@@ -29,7 +31,8 @@ class Menu():
             pos=config.figma_para_tela(51, 667),
             cor_padrao=config.AZUL_CLARO,
             cor_texto=config.PRETO,
-            cor_hover=config.BRANCO
+            cor_hover=config.BRANCO,
+            fonte=config.fonte_botao
         )
 
         ## Botão Configurações
@@ -38,7 +41,8 @@ class Menu():
             pos=config.figma_para_tela(51, 774),
             cor_padrao=config.SALMAO,
             cor_texto=config.PRETO,
-            cor_hover=config.BRANCO
+            cor_hover=config.BRANCO,
+            fonte=config.fonte_botao
         )
 
         self.botao_sair = Botao(
@@ -46,7 +50,8 @@ class Menu():
             pos=config.figma_para_tela(51, 881),
             cor_padrao=config.VERMELHO,
             cor_texto=config.PRETO,
-            cor_hover=config.BRANCO
+            cor_hover=config.BRANCO,
+            fonte=config.fonte_botao
         )
 
         self.botoes = [self.botao_jogar, self.botao_questoes,
@@ -60,18 +65,21 @@ class Menu():
             ("L", config.AZUL_CLARO)
         ]
         self.espacamentos = {
-            "E": -10,
-            "padrao": 1
+            "E": -14,
+            "V": -26,
+            "A": -6,
+            "padrao": 0
         }
     
     def atualizar(self):
-            for botao in self.botoes:
-                botao.atualizar_hover()
+        for botao in self.botoes:
+            botao.atualizar_hover()
         
     def exibir(self, tela):
         tela.fill((config.BRANCO_FUNDO))
         tela.fill(config.VERMELHO, ((0, 0), config.figma_para_tela(1440, 404)))
-    
+
+        # Logo
         x_logo, y_logo = config.figma_para_tela(49, 55)
 
         for i, (letra, cor) in enumerate(self.letras_logo):
@@ -81,7 +89,28 @@ class Menu():
                 
             if i < len(self.letras_logo) - 1:
                 x_logo += self.espacamentos.get(letra, self.espacamentos["padrao"])
-                tela.fill(config.BRANCO_FUNDO)
 
         for botao in self.botoes:
             botao.exibir_botao(tela)
+
+
+# Teste da tela
+if __name__ == "__main__":
+    pygame.init()
+    config.criar_fontes()
+    tela = pygame.display.set_mode((config.LARGURA_TELA, config.ALTURA_TELA))
+    menu = Menu()
+    cronometro = pygame.time.Clock()
+
+    # Eventos da janela
+    execucao = True
+    while execucao:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                execucao = False
+        
+        menu.atualizar()
+        menu.exibir(tela)
+
+        pygame.display.flip()
+        cronometro.tick(60)

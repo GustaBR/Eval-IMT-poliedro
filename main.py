@@ -1,12 +1,12 @@
 import pygame
 pygame.init()
 
-from config import LARGURA_TELA, ALTURA_TELA
+import config
 from menu import Menu
 
 
 # Criando a janela
-tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
+tela = pygame.display.set_mode((config.LARGURA_TELA, config.ALTURA_TELA))
 
 # Definindo título e ícone da janela
 pygame.display.set_caption("Eval")
@@ -17,7 +17,10 @@ if icone_foi_criado:
     icone = pygame.image.load("nome_do_arquivo.extensao")
     pygame.display.set_icon(icone)
 
+config.criar_fontes()
 menu = Menu()
+cronometro = pygame.time.Clock()
+
 
 # Eventos da janela
 execucao = True
@@ -29,4 +32,5 @@ while execucao:
     menu.atualizar()
     menu.exibir(tela)
 
-    pygame.display.update()
+    pygame.display.flip()
+    cronometro.tick(60)
