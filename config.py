@@ -1,11 +1,11 @@
-# Tamanho da tela
-LARGURA_TELA = 1440
-ALTURA_TELA = 1024
+# Tamanho da janela
+LARGURA_JANELA = 720
+ALTURA_JANELA = 512
 
 # Retorna a posição do elemento na tela com base no figma
 def figma_para_tela(x_figma, y_figma):
-    x = int(x_figma * LARGURA_TELA / 1440)
-    y = int(y_figma * ALTURA_TELA / 1024)
+    x = int(x_figma * LARGURA_JANELA / 1440)
+    y = int(y_figma * ALTURA_JANELA / 1024)
     return x, y
 
 # Cores
@@ -21,7 +21,7 @@ VERMELHO = (230, 57, 70) # E63946
 
 def criar_fontes():
     # Tamanhos de fonte
-    fonte_principal_tamanho_base = int(44 * ALTURA_TELA / 1024) # Tamanho de texto de botões
+    fonte_principal_tamanho_base = int(44 * ALTURA_JANELA / 1024) # Tamanho de texto de botões
     fonte_principal_tamanho_titulo = fonte_principal_tamanho_base * 5 # Tamanho do título do jogo
 
     # Fontes

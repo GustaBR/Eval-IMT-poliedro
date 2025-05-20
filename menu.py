@@ -1,9 +1,29 @@
 import pygame
 import config
 from botao import Botao
+from sys import exit
+from jogo import Jogo
 
 class Menu():
-    def __init__(self):
+    def jogar(self):
+        self.gerenciador.trocar_tela(Jogo)
+
+    def questoes(self):
+        print("Questões")
+    
+    def estatisticas(self):
+        print("Estatísticas")
+
+    def configuracoes(self):
+        print("Configurações")
+
+    def sair(self):
+        pygame.quit()
+        exit()
+
+    def __init__(self, gerenciador):
+        self.gerenciador = gerenciador
+
         # Botões
         ## Botão Jogar
         self.botao_jogar = Botao(
@@ -12,7 +32,8 @@ class Menu():
             cor_padrao=config.LARANJA,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
-            fonte=config.fonte_botao
+            fonte=config.fonte_botao,
+            acao=self.jogar
             )
 
         ## Botão Questões
@@ -22,7 +43,8 @@ class Menu():
             cor_padrao=config.VINHO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
-            fonte=config.fonte_botao
+            fonte=config.fonte_botao,
+            acao=self.questoes
             )
 
         ## Botão Estatísticas
@@ -32,7 +54,8 @@ class Menu():
             cor_padrao=config.AZUL_CLARO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
-            fonte=config.fonte_botao
+            fonte=config.fonte_botao,
+            acao=self.estatisticas
         )
 
         ## Botão Configurações
@@ -42,16 +65,19 @@ class Menu():
             cor_padrao=config.SALMAO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
-            fonte=config.fonte_botao
+            fonte=config.fonte_botao,
+            acao=self.configuracoes
         )
 
+        ## Botão Sair
         self.botao_sair = Botao(
             texto="Sair",
             pos=config.figma_para_tela(51, 881),
             cor_padrao=config.VERMELHO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
-            fonte=config.fonte_botao
+            fonte=config.fonte_botao,
+            acao=self.sair
         )
 
         self.botoes = [self.botao_jogar, self.botao_questoes,
@@ -71,6 +97,12 @@ class Menu():
             "padrao": 0
         }
     
+    def checar_eventos(self, evento):
+        if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+            for botao in self.botoes:
+                if botao.hovered:
+                    botao.realizar_acao()
+
     def atualizar(self):
         for botao in self.botoes:
             botao.atualizar_hover()

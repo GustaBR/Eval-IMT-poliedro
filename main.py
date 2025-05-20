@@ -3,10 +3,11 @@ pygame.init()
 
 import config
 from menu import Menu
+from gerenciador_telas import GerenciadorTelas
 
 
 # Criando a janela
-tela = pygame.display.set_mode((config.LARGURA_TELA, config.ALTURA_TELA))
+janela = pygame.display.set_mode((config.LARGURA_JANELA, config.ALTURA_JANELA))
 
 # Definindo título e ícone da janela
 pygame.display.set_caption("Eval")
@@ -18,7 +19,8 @@ if icone_foi_criado:
     pygame.display.set_icon(icone)
 
 config.criar_fontes()
-menu = Menu()
+gerenciador = GerenciadorTelas()
+gerenciador.trocar_tela(Menu)
 cronometro = pygame.time.Clock()
 
 
@@ -28,9 +30,10 @@ while execucao:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             execucao = False
+        gerenciador.checar_eventos(evento)
     
-    menu.atualizar()
-    menu.exibir(tela)
+    gerenciador.atualizar()
+    gerenciador.exibir(janela)
 
     pygame.display.flip()
     cronometro.tick(60)

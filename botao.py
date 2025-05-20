@@ -3,7 +3,7 @@ import config
 
 # Classe Botão
 class Botao:
-    def __init__(self, texto, pos, cor_padrao, cor_texto, cor_hover, fonte):
+    def __init__(self, texto, pos, cor_padrao, cor_texto, cor_hover, fonte, acao=None):
         self.fonte = fonte
         self.tamanho = config.figma_para_tela(340, 74)
         self.rect = pygame.Rect(pos, self.tamanho)
@@ -12,6 +12,7 @@ class Botao:
         self.cor_texto = cor_texto
         self.cor_hover = cor_hover
         self.hovered = False
+        self.acao = acao
 
     def atualizar_hover(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -24,3 +25,7 @@ class Botao:
         texto = self.fonte.render(self.texto, True, self.cor_texto)
         texto_rect = texto.get_rect(center=self.rect.center)
         tela.blit(texto, texto_rect)
+
+    def realizar_acao(self):
+        if self.acao:
+            self.acao()
