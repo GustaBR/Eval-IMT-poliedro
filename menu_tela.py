@@ -1,6 +1,6 @@
 import pygame
 import config
-from botao import Botao
+from botao_menu import BotaoMenu
 from sys import exit
 from jogo_tela import JogoTela
 
@@ -10,7 +10,7 @@ class MenuTela():
 
         # Botões
         ## Botão Jogar
-        self.botao_jogar = Botao(
+        self.botao_jogar = BotaoMenu(
             texto="Jogar",
             pos=config.figma_para_tela(51, 453),
             cor_padrao=config.LARANJA,
@@ -21,7 +21,7 @@ class MenuTela():
             )
 
         ## Botão Questões
-        self.botao_questoes = Botao(
+        self.botao_questoes = BotaoMenu(
             texto="Questões",
             pos=config.figma_para_tela(51, 560),
             cor_padrao=config.VINHO,
@@ -31,7 +31,7 @@ class MenuTela():
             )
 
         ## Botão Estatísticas
-        self.botao_estatisticas = Botao(
+        self.botao_estatisticas = BotaoMenu(
             texto="Estatísticas",
             pos=config.figma_para_tela(51, 667),
             cor_padrao=config.AZUL_CLARO,
@@ -41,7 +41,7 @@ class MenuTela():
         )
 
         ## Botão Configurações
-        self.botao_configuracoes = Botao(
+        self.botao_configuracoes = BotaoMenu(
             texto="Configurações",
             pos=config.figma_para_tela(51, 774),
             cor_padrao=config.SALMAO,
@@ -51,7 +51,7 @@ class MenuTela():
         )
 
         ## Botão Sair
-        self.botao_sair = Botao(
+        self.botao_sair = BotaoMenu(
             texto="Sair",
             pos=config.figma_para_tela(51, 881),
             cor_padrao=config.VERMELHO,
@@ -104,4 +104,4 @@ class MenuTela():
                 x_logo += self.espacamentos.get(letra, self.espacamentos["padrao"])
 
         for botao in self.botoes:
-            botao.exibir_botao(tela)
+            botao.exibir_botaoMenu(tela)

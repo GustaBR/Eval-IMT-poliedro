@@ -1,3 +1,6 @@
+import pygame
+import os
+
 # Tamanho da janela
 LARGURA_JANELA = 720
 ALTURA_JANELA = 512
@@ -17,18 +20,21 @@ PRETO = (0, 0, 0) # 000000
 VINHO = (132, 64, 69) # 844045
 SALMAO = (200, 126, 131) # C87E83
 VERMELHO = (230, 57, 70) # E63946
+AZUL_LOGIN = (0, 76, 151)
+AZUL_ESCURO_LOGIN = (0, 60, 120)
+AZUL_CLARO_LOGIN = (51, 122, 204)
 
 # Tema Poliedro
 Tema_Poliedro = {
     "bg": (245, 245, 250),
     "text": (25, 25, 30),
-    "accent": Azul,
-    "accent_hover": Azul_Escuro,
+    "accent": AZUL_LOGIN,
+    "accent_hover": AZUL_ESCURO_LOGIN,
     "error": (220, 50, 50),
     "input_bg": (255, 255, 255),
-    "input_border": Azul,
-    "input_focus": Azul,
-    "btn_bg": Azul,
+    "input_border": AZUL_LOGIN,
+    "input_focus": AZUL_LOGIN,
+    "btn_bg": AZUL_LOGIN,
     "btn_disabled": (160, 160, 160),
     "placeholder": (150, 150, 160),
     "shadow": (0, 0, 0, 25),
@@ -36,6 +42,11 @@ Tema_Poliedro = {
 
 # Caminhos dos assets (imagens e sons)
 imagem = os.path.join(os.path.dirname(__file__), "imagens")
+
+icone_usuario = os.path.join(imagem, "icone_usuario.png")
+icone_cadeado = os.path.join(imagem, "icone_cadeado.png")
+icone_olho_on = os.path.join(imagem, "icone_olho_aberto.png")
+icone_olho_off = os.path.join(imagem, "icone_olho_fechado.png")
 
 def criar_fontes():
     # Tamanhos de fonte

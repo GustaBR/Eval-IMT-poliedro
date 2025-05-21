@@ -2,7 +2,8 @@ import pygame
 pygame.init()
 
 import config
-from menu import MenuTela
+from menu_tela import MenuTela
+from login_tela import LoginTela
 from gerenciador_telas import GerenciadorTelas
 
 

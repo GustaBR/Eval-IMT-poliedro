@@ -1,6 +1,6 @@
 import pygame
 from utils import carregar_icone
-from components.placeholder import AnimatedPlaceholder
+from placeholder import AnimatedPlaceholder
 from config import fonte_regular, Tema_Poliedro, icone_olho_on, icone_olho_off, som_clicar
 
 class InputBox:
