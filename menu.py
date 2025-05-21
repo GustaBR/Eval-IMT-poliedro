@@ -4,23 +4,7 @@ from botao import Botao
 from sys import exit
 from jogo import Jogo
 
-class Menu():
-    #def jogar(self):
-        
-
-    def questoes(self):
-        print("Questões")
-    
-    def estatisticas(self):
-        print("Estatísticas")
-
-    def configuracoes(self):
-        print("Configurações")
-
-    def sair(self):
-        pygame.quit()
-        exit()
-
+class Menu(): 
     def __init__(self, gerenciador):
         self.gerenciador = gerenciador
 
@@ -43,8 +27,7 @@ class Menu():
             cor_padrao=config.VINHO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
-            fonte=config.fonte_botao,
-            acao=self.questoes
+            fonte=config.fonte_botao
             )
 
         ## Botão Estatísticas
@@ -54,8 +37,7 @@ class Menu():
             cor_padrao=config.AZUL_CLARO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
-            fonte=config.fonte_botao,
-            acao=self.estatisticas
+            fonte=config.fonte_botao
         )
 
         ## Botão Configurações
@@ -65,8 +47,7 @@ class Menu():
             cor_padrao=config.SALMAO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
-            fonte=config.fonte_botao,
-            acao=self.configuracoes
+            fonte=config.fonte_botao
         )
 
         ## Botão Sair
@@ -77,7 +58,7 @@ class Menu():
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
             fonte=config.fonte_botao,
-            acao=self.sair
+            acao= lambda: (pygame.quit(), exit())
         )
 
         self.botoes = [self.botao_jogar, self.botao_questoes,
