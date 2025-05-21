@@ -1,6 +1,5 @@
 from menu import Menu
 
-
 class GerenciadorTelas:
     def __init__(self):
         self.telas = {}

@@ -1,3 +1,5 @@
+import config
+
 class Jogo:
     def __init__(self, gerenciador):
         # Atributos da tela
@@ -11,4 +13,5 @@ class Jogo:
         pass
 
     def exibir(self, janela):
-        pass
+        print("teste")
+        janela.fill(config.BRANCO)

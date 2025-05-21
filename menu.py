@@ -5,8 +5,8 @@ from sys import exit
 from jogo import Jogo
 
 class Menu():
-    def jogar(self):
-        self.gerenciador.trocar_tela(Jogo)
+    #def jogar(self):
+        
 
     def questoes(self):
         print("Questões")
@@ -33,7 +33,7 @@ class Menu():
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
             fonte=config.fonte_botao,
-            acao=self.jogar
+            acao=lambda: self.gerenciador.trocar_tela(Jogo)
             )
 
         ## Botão Questões
@@ -108,7 +108,7 @@ class Menu():
             botao.atualizar_hover()
         
     def exibir(self, tela):
-        tela.fill((config.BRANCO_FUNDO))
+        tela.fill(config.BRANCO_FUNDO)
         tela.fill(config.VERMELHO, ((0, 0), config.figma_para_tela(1440, 404)))
 
         # Logo
