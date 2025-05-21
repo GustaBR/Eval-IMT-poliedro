@@ -2,7 +2,7 @@ import pygame
 import config
 
 # Classe Botão
-class Botao:
+class BotaoMenu:
     def __init__(self, texto, pos, cor_padrao, cor_texto, cor_hover, fonte, acao=None):
         self.fonte = fonte
         self.tamanho = config.figma_para_tela(340, 74)

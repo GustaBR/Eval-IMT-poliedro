@@ -2,9 +2,9 @@ import pygame
 import config
 from botao import Botao
 from sys import exit
-from jogo import Jogo
+from jogo_tela import JogoTela
 
-class Menu(): 
+class MenuTela(): 
     def __init__(self, gerenciador):
         self.gerenciador = gerenciador
 
@@ -17,7 +17,7 @@ class Menu():
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
             fonte=config.fonte_botao,
-            acao=lambda: self.gerenciador.trocar_tela(Jogo)
+            acao=lambda: self.gerenciador.trocar_tela(JogoTela)
             )
 
         ## Botão Questões
@@ -105,25 +105,3 @@ class Menu():
 
         for botao in self.botoes:
             botao.exibir_botao(tela)
-
-
-# Teste da tela
-if __name__ == "__main__":
-    pygame.init()
-    config.criar_fontes()
-    tela = pygame.display.set_mode((config.LARGURA_TELA, config.ALTURA_TELA))
-    menu = Menu()
-    cronometro = pygame.time.Clock()
-
-    # Eventos da janela
-    execucao = True
-    while execucao:
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                execucao = False
-        
-        menu.atualizar()
-        menu.exibir(tela)
-
-        pygame.display.flip()
-        cronometro.tick(60)

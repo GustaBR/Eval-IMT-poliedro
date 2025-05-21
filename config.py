@@ -18,6 +18,24 @@ VINHO = (132, 64, 69) # 844045
 SALMAO = (200, 126, 131) # C87E83
 VERMELHO = (230, 57, 70) # E63946
 
+# Tema Poliedro
+Tema_Poliedro = {
+    "bg": (245, 245, 250),
+    "text": (25, 25, 30),
+    "accent": Azul,
+    "accent_hover": Azul_Escuro,
+    "error": (220, 50, 50),
+    "input_bg": (255, 255, 255),
+    "input_border": Azul,
+    "input_focus": Azul,
+    "btn_bg": Azul,
+    "btn_disabled": (160, 160, 160),
+    "placeholder": (150, 150, 160),
+    "shadow": (0, 0, 0, 25),
+}
+
+# Caminhos dos assets (imagens e sons)
+imagem = os.path.join(os.path.dirname(__file__), "imagens")
 
 def criar_fontes():
     # Tamanhos de fonte
@@ -29,3 +47,22 @@ def criar_fontes():
     global fonte_botao, fonte_titulo
     fonte_botao = pygame.font.Font("IrishGrover-Regular.ttf", fonte_principal_tamanho_base)
     fonte_titulo = pygame.font.Font("IrishGrover-Regular.ttf", fonte_principal_tamanho_titulo)
+
+def criar_fontes_login(size, bold=False, italic=False):
+    return pygame.font.SysFont("Segoe UI", size, bold=bold, italic=italic)
+
+fonte_regular = criar_fontes_login(20)
+fonte_negrito = criar_fontes_login(26, True)
+fonte_pequeno = criar_fontes_login(14)
+fonte_ital = criar_fontes_login(18, italic=True)
+
+def carregar_audio(nome):
+    caminho = os.path.join(imagem, nome)
+    try:
+        return pygame.mixer.Sound(caminho)
+    except Exception:
+        return None
+
+som_clicar = carregar_audio("click.wav") # Arquivo de áudio
+som_erro = carregar_audio("error.wav") # Arquivo de áudio
+som_correto = carregar_audio("success.wav") # Arquivo de áudio

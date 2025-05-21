@@ -2,7 +2,7 @@ import pygame
 pygame.init()
 
 import config
-from menu import Menu
+from menu import MenuTela
 from gerenciador_telas import GerenciadorTelas
 
 
@@ -20,7 +20,7 @@ if icone_foi_criado:
 
 config.criar_fontes()
 gerenciador = GerenciadorTelas()
-gerenciador.trocar_tela(Menu)
+gerenciador.trocar_tela(LoginTela)
 cronometro = pygame.time.Clock()
 
 
