@@ -10,7 +10,6 @@ class InputBox:
 
     def __init__(self, rel_rect, placeholder, icone_caminho=None, is_senha=False):
         self.rel_rect = rel_rect
-        self.placeholder = placeholder
         self.text = ""
         self.ativo = False
         self.is_senha = is_senha

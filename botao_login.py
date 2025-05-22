@@ -62,9 +62,9 @@ class BotaoLogin:
             self.cor = self.cores["hover"] if self.hovered else self.cores["normal"]
 
         # Desenha o retângulo arredondado
-        pygame.draw.rect(self.janela, self.cor, self.rect, border_radius=12)
+        pygame.draw.rect(janela, self.cor, self.rect, border_radius=12)
 
         # Renderiza o texto branco no centro do botão
-        texto_surf = self.font.render(self.texto, True, (255, 255, 255))
+        texto_surf = self.fonte.render(self.texto, True, (255, 255, 255))
         texto_rect = texto_surf.get_rect(center=self.rect.center)
-        self.janela.blit(texto_surf, texto_rect)
+        janela.blit(texto_surf, texto_rect)

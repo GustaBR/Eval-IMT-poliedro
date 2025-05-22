@@ -12,9 +12,9 @@ class LoginTela:
         self.cor_fundo = self.tema["bg"]
 
         self.input_usuario = InputBox(
-            (0, 0), (0.2, 0.48, 0.6, 0.068), "Usuário", icone_usuario)
+        (0.2, 0.48, 0.6, 0.068), "Usuário", icone_usuario)
         self.input_senha = InputBox(
-            (0, 0), (0.2, 0.60, 0.6, 0.068), "Senha", icone_cadeado)
+        (0.2, 0.60, 0.6, 0.068), "Senha", icone_cadeado)
 
         self.botao_login = BotaoLogin((0.2, 0.72, 0.6, 0.09), "Entrar")
         
@@ -164,10 +164,10 @@ class LoginTela:
 
         self.input_usuario.exibir(janela)
         self.input_senha.exibir(janela)
-        self.botao_login.exibir_botao()
+        self.botao_login.exibir(janela)
 
         if self.mensagem:
-            msg_surf = fonte_regular.render(self.message, True, self.mensagem_cor)
+            msg_surf = fonte_regular.render(self.mensagem, True, self.mensagem_cor)
             msg_rect = msg_surf.get_rect(center=(largura // 2, int(altura * 0.85)))
             janela.blit(msg_surf, msg_rect)
 
