@@ -2,7 +2,8 @@ import pygame
 pygame.init()
 
 import config
-from menu import Menu
+from menu_tela import MenuTela
+from login_tela import LoginTela
 from gerenciador_telas import GerenciadorTelas
 
 
@@ -20,20 +21,21 @@ if icone_foi_criado:
 
 config.criar_fontes()
 gerenciador = GerenciadorTelas()
-gerenciador.trocar_tela(Menu)
+gerenciador.trocar_tela(LoginTela)
 cronometro = pygame.time.Clock()
 
-
+ 
 # Eventos da janela
 execucao = True
 while execucao:
+    dt = cronometro.tick(60) / 1000  # delta time em segundos
+
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             execucao = False
         gerenciador.checar_eventos(evento)
     
-    gerenciador.atualizar()
+    gerenciador.atualizar(dt)  # passe dt aqui
     gerenciador.exibir(janela)
 
     pygame.display.flip()
-    cronometro.tick(60)
