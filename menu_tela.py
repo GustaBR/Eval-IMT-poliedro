@@ -88,20 +88,20 @@ class MenuTela():
         for botao in self.botoes:
             botao.atualizar_hover()
         
-    def exibir(self, tela):
-        tela.fill(config.BRANCO_FUNDO)
-        tela.fill(config.VERMELHO, ((0, 0), config.figma_para_tela(1440, 404)))
+    def exibir(self, janela):
+        janela.fill(config.BRANCO_FUNDO)
+        janela.fill(config.VERMELHO, ((0, 0), config.figma_para_tela(1440, 404)))
 
         # Logo
         x_logo, y_logo = config.figma_para_tela(49, 55)
 
         for i, (letra, cor) in enumerate(self.letras_logo):
             parte = config.fonte_titulo.render(letra, True, cor)
-            tela.blit(parte, (x_logo, y_logo))
+            janela.blit(parte, (x_logo, y_logo))
             x_logo += parte.get_width()
                 
             if i < len(self.letras_logo) - 1:
                 x_logo += self.espacamentos.get(letra, self.espacamentos["padrao"])
 
         for botao in self.botoes:
-            botao.exibir_botaoMenu(tela)
+            botao.exibir_botao(janela)

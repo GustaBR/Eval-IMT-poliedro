@@ -14,7 +14,9 @@ class LoginTela:
         self.input_usuario = InputBox(
             (0, 0), (0.2, 0.48, 0.6, 0.068), "Usuário", icone_usuario)
         self.input_senha = InputBox(
-            (0, 0), (0.2, 0.60, 0.6, 0.068), "Senha", icone_cadeado, is_password=True)
+            (0, 0), (0.2, 0.60, 0.6, 0.068), "Senha", icone_cadeado)
+
+        self.botao_login = BotaoLogin((0.2, 0.72, 0.6, 0.09), "Entrar")
         
         # Mensagem de erro ou sucesso
         self.mensagem = ""
@@ -111,11 +113,11 @@ class LoginTela:
         self.mensagem_timer = 3
 
     def atualizar(self):
-        self.input_user.update()
-        self.input_pass.update()
+        self.input_usuario.atualizar()
+        self.input_senha.atualizar()
 
         campos_preenchidos = bool(self.input_usuario.text.strip()) and bool(self.input_senha.text.strip())
-        self.botao_login.set_active(campos_preenchidos) # Continuar alterações daqui ## Tentar ajeitar a classe Button.
+        self.botao_login.definir_ativo(campos_preenchidos)
         self.botao_login.atualizar()
 
         '''if self.message_timer > 0:
@@ -127,11 +129,10 @@ class LoginTela:
     def exibir(self, janela):
         
         # Botão login
-        self.botao_login = BotaoLogin(janela, (0.2, 0.72, 0.6, 0.09), "Entrar")
 
         # Caixas de entrada
-        self.janela.fill(self.cor_fundo)
-        largura, altura = self.janela.get_size()
+        janela.fill(self.cor_fundo)
+        largura, altura = janela.get_size()
         if self.header_img_original:
             img_w, img_h = self.header_img_original.get_size()
             escala = largura / img_w
@@ -146,7 +147,7 @@ class LoginTela:
 
             scaled_img = pygame.transform.smoothscale(self.header_img_original, (nova_largura, nova_altura))
             x_pos = (largura - nova_largura) // 2 
-            self.surface.blit(scaled_img, (x_pos, 0))
+            janela.blit(scaled_img, (x_pos, 0))
             altura_header = nova_altura
         else:
             altura_header = 0
@@ -154,20 +155,20 @@ class LoginTela:
         titulo_y = altura_header + int(altura * 0.03)
         titulo_surf = fonte_negrito.render("Entrar na Plataforma Poliedro", True, self.tema["accent"])
         titulo_rect = titulo_surf.get_rect(center=(largura // 2, titulo_y))
-        self.janela.blit(titulo_surf, titulo_rect)
+        janela.blit(titulo_surf, titulo_rect)
 
         desc_y = titulo_y + int(altura * 0.05)
         desc_surf = fonte_regular.render("Digite seu usuário e senha para continuar.", True, self.tema["accent"])
         desc_rect = desc_surf.get_rect(center=(largura // 2, desc_y))
-        self.janela.blit(desc_surf, desc_rect)
+        janela.blit(desc_surf, desc_rect)
 
-        self.input_usuario.draw()
-        self.input_senha.draw()
+        self.input_usuario.exibir(janela)
+        self.input_senha.exibir(janela)
         self.botao_login.exibir_botao()
 
         if self.mensagem:
             msg_surf = fonte_regular.render(self.message, True, self.mensagem_cor)
             msg_rect = msg_surf.get_rect(center=(largura // 2, int(altura * 0.85)))
-            self.janela.blit(msg_surf, msg_rect)
+            janela.blit(msg_surf, msg_rect)
 
         

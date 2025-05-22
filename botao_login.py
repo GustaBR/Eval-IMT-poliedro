@@ -35,7 +35,7 @@ class BotaoLogin:
     def definir_ativo(self, estado: bool):
         self.ativo = estado
 
-    def checar_evento(self, evento):
+    def checar_eventos(self, evento):
         if not self.ativo:
             return False
 
@@ -54,7 +54,7 @@ class BotaoLogin:
         #self.update_rect()
         ...
 
-    def exibir_botao(self, janela):
+    def exibir(self, janela):
         # Escolhe a cor de acordo com o estado do botão
         if not self.ativo:
             self.cor = self.cores["inativo"]
