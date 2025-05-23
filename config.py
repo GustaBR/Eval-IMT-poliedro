@@ -1,6 +1,13 @@
 import pygame
 import os
 
+# Número de frames/s
+frames = 60
+
+# Tempo entre frames
+cronometro = pygame.time.Clock()
+dt = cronometro.tick(frames)
+
 # Tamanho da janela
 LARGURA_JANELA = 720
 ALTURA_JANELA = 512

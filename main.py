@@ -1,14 +1,14 @@
 import pygame
 pygame.init()
 
-import config
+from config import LARGURA_JANELA, ALTURA_JANELA, criar_fontes, frames, dt
 from menu_tela import MenuTela
 from login_tela import LoginTela
 from gerenciador_telas import GerenciadorTelas
 
 
 # Criando a janela
-janela = pygame.display.set_mode((config.LARGURA_JANELA, config.ALTURA_JANELA))
+janela = pygame.display.set_mode((LARGURA_JANELA, ALTURA_JANELA))
 
 # Definindo título e ícone da janela
 pygame.display.set_caption("Eval")
@@ -19,23 +19,20 @@ if icone_foi_criado:
     icone = pygame.image.load("nome_do_arquivo.extensao")
     pygame.display.set_icon(icone)
 
-config.criar_fontes()
+criar_fontes()
 gerenciador = GerenciadorTelas()
 gerenciador.trocar_tela(LoginTela)
 cronometro = pygame.time.Clock()
-
  
 # Eventos da janela
 execucao = True
 while execucao:
-    dt = cronometro.tick(60) / 1000  # delta time em segundos
-
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             execucao = False
         gerenciador.checar_eventos(evento)
     
-    gerenciador.atualizar(dt)  # passe dt aqui
+    gerenciador.atualizar()
     gerenciador.exibir(janela)
-
+    cronometro.tick(frames)
     pygame.display.flip()

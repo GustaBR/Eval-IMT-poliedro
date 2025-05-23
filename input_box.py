@@ -1,12 +1,14 @@
 import pygame
 from utils import carregar_icone
 from placeholder import AnimatedPlaceholder
-from config import fonte_regular, Tema_Poliedro, icone_olho_on, icone_olho_off, som_clicar
+from config import fonte_regular, Tema_Poliedro, icone_olho_on, icone_olho_off, som_clicar, dt
+import config
+import math
 
 class InputBox:
-    CURSOR_BLINK_INTERVAL = 0.6
-    BACKSPACE_REPEAT_DELAY = 0.5
-    BACKSPACE_REPEAT_INTERVAL = 0.05
+    CURSOR_BLINK_INTERVAL = 500
+    BACKSPACE_REPEAT_DELAY = 500
+    BACKSPACE_REPEAT_INTERVAL = 15
 
     def __init__(self, rel_rect, placeholder, icone_caminho=None, is_senha=False):
         self.rel_rect = rel_rect
@@ -104,7 +106,7 @@ class InputBox:
                     self.apagar_segurado = False
                     self.apagar_timer = 0.0
 
-    def atualizar(self, dt):
+    def atualizar(self):
         # Controla o piscar do cursor
         self.cursor_timer += dt
         if self.cursor_timer >= self.CURSOR_BLINK_INTERVAL:
@@ -115,12 +117,13 @@ class InputBox:
 
         # Lógica para repetir backspace ao segurar a tecla
         if self.ativo and self.apagar_segurado:
+            print(self.apagar_timer)
             self.apagar_timer += dt
-            if self.apagar_timer >= self.BACKSPACE_REPEAT_DELAY:
-                if self.apagar_timer >= self.BACKSPACE_REPEAT_DELAY + self.BACKSPACE_REPEAT_INTERVAL:
-                    self.apagar_timer = self.BACKSPACE_REPEAT_DELAY
-                    if self.text:
-                        self.text = self.text[:-1]
+            if self.apagar_timer >= self.BACKSPACE_REPEAT_DELAY + self.BACKSPACE_REPEAT_INTERVAL:
+                self.apagar_timer = self.BACKSPACE_REPEAT_DELAY
+                if self.text:
+                    self.text = self.text[:-dt//self.BACKSPACE_REPEAT_INTERVAL+1] if dt//self.BACKSPACE_REPEAT_INTERVAL > 1 else self.text[:-1]
+                    print(dt, config.frames, -dt//self.BACKSPACE_REPEAT_INTERVAL+1)
 
     def exibir(self, janela):
         pygame.draw.rect(janela, self.tema["input_bg"], self.rect, border_radius=12)

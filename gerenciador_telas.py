@@ -14,9 +14,9 @@ class GerenciadorTelas:
         if self.tela_atual:
             self.tela_atual.checar_eventos(evento)
 
-    def atualizar(self, dt):
+    def atualizar(self):
         if self.tela_atual:
-            self.tela_atual.atualizar(dt)
+            self.tela_atual.atualizar()
 
 
     def exibir(self, janela):

@@ -1,8 +1,8 @@
 import pygame
+from config import LARGURA_JANELA, ALTURA_JANELA
 
 class BotaoLogin:
-    def __init__(self, surface, rel_rect, text, on_click=None, active=True):
-        self.surface = surface
+    def __init__(self, rel_rect, text, on_click=None, active=True):
         self.rel_rect = rel_rect
         self.text = text
         self.on_click = on_click
@@ -16,12 +16,11 @@ class BotaoLogin:
         }
 
         self.rect = pygame.Rect(0, 0, 0, 0)
-        self.update_rect()
 
         self.font = pygame.font.Font(None, 24) # Fonte para o texto do botão 
 
-    def update_rect(self):
-        largura, altura = self.surface.get_size()
+    def atualizar_rect(self):
+        largura, altura = LARGURA_JANELA, ALTURA_JANELA
         x = int(self.rel_rect[0] * largura)
         y = int(self.rel_rect[1] * altura)
         w = int(self.rel_rect[2] * largura)
@@ -49,16 +48,16 @@ class BotaoLogin:
         return False
 
     def update(self, db):
-        self.update_rect()  # Atualiza posição e tamanho do botão 
+        self.atualizar_rect() # Atualiza a posição e tamanho do botão 
 
-    def draw(self):
+    def exibir(self, janela):
         if not self.active:
             cor = self.colors["inactive"] # Escolhe a cor de acordo com o estado do botão
         else:
             cor = self.colors["hover"] if self.hovered else self.colors["normal"]
 
-        pygame.draw.rect(self.surface, cor, self.rect, border_radius=12)  # Desenha o retângulo arredondado
+        pygame.draw.rect(janela, cor, self.rect, border_radius=12)  # Desenha o retângulo arredondado
 
         text_surf = self.font.render(self.text, True, (255, 255, 255))  # Renderiza o texto branco no centro do botão
         text_rect = text_surf.get_rect(center=self.rect.center)
-        self.surface.blit(text_surf, text_rect)
+        janela.blit(text_surf, text_rect)

@@ -1,9 +1,10 @@
 import pygame
 import mysql.connector
 from mysql.connector import Error
-from config import Tema_Poliedro, fonte_negrito, fonte_regular, som_erro, som_correto, icone_usuario, icone_cadeado, imagem
+from config import Tema_Poliedro, fonte_negrito, fonte_regular, som_erro, som_correto, icone_usuario, icone_cadeado, imagem, dt
 from input_box import InputBox
 from botao_login import BotaoLogin
+from menu_tela import MenuTela
 
 
 class LoginTela:
@@ -17,7 +18,11 @@ class LoginTela:
         self.input_senha = InputBox(
             (0.2, 0.60, 0.6, 0.068), "Senha", icone_cadeado, is_senha=True)
 
-        self.botao_login = None  # será criado em exibir()
+        self.botao_login = BotaoLogin(
+                rel_rect=(0.2, 0.72, 0.6, 0.09),
+                text="Entrar",
+                on_click=self.tentar_login
+            )
 
         # Mensagem de erro ou sucesso
         self.mensagem = ""
@@ -84,7 +89,7 @@ class LoginTela:
                 if som_correto:
                     som_correto.play()
                 conn.close()
-                return
+                self.gerenciador.trocar_tela(MenuTela)
 
             # Se não for aluno, tenta professor
             query_professor = "SELECT * FROM professor WHERE mailProf = %s AND senhaProf = %s"
@@ -114,15 +119,15 @@ class LoginTela:
         self.mensagem_cor = cor
         self.mensagem_timer = 3
 
-    def atualizar(self, dt):
+    def atualizar(self):
         janela = pygame.display.get_surface()
         largura, altura = janela.get_size()
 
         self.input_usuario.atualizar_rect(janela)
         self.input_senha.atualizar_rect(janela)
 
-        self.input_usuario.atualizar(dt)
-        self.input_senha.atualizar(dt)
+        self.input_usuario.atualizar()
+        self.input_senha.atualizar()
 
         campos_preenchidos = bool(self.input_usuario.text.strip()) and bool(self.input_senha.text.strip())
         if self.botao_login:
@@ -135,13 +140,6 @@ class LoginTela:
             self.mensagem = ""
 
     def exibir(self, janela):
-        if self.botao_login is None:
-            self.botao_login = BotaoLogin(
-                surface=janela,
-                rel_rect=(0.2, 0.72, 0.6, 0.09),
-                text="Entrar",
-                on_click=self.tentar_login
-            )
 
         janela.fill(self.cor_fundo)
         largura, altura = janela.get_size()
@@ -177,7 +175,7 @@ class LoginTela:
 
         self.input_usuario.exibir(janela)
         self.input_senha.exibir(janela)
-        self.botao_login.draw()
+        self.botao_login.exibir(janela)
 
         if self.mensagem:  # Mensagem de status
             msg_surf = fonte_regular.render(self.mensagem, True, self.mensagem_cor)
