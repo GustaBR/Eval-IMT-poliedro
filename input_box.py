@@ -7,8 +7,8 @@ import math
 
 class InputBox:
     CURSOR_BLINK_INTERVAL = 500
-    BACKSPACE_REPEAT_DELAY = 500
-    BACKSPACE_REPEAT_INTERVAL = 15
+    REPEAT_DELAY = 500
+    REPEAT_INTERVAL = 15
 
     def __init__(self, rel_rect, placeholder, icone_caminho=None, is_senha=False):
         self.rel_rect = rel_rect
@@ -34,7 +34,9 @@ class InputBox:
         self.rect = pygame.Rect(0, 0, 0, 0)
 
         self.apagar_segurado = False
-        self.apagar_timer = 0.0
+        self.tecla_segurada = False
+        self.ultima_tecla = None
+        self.timer = 0
 
         self.olho_tamanho_icone = 24
         self.icone_olho = None
@@ -47,9 +49,6 @@ class InputBox:
             self.olho_rect = pygame.Rect(0, 0, self.olho_tamanho_icone, self.olho_tamanho_icone)
 
     def atualizar_rect(self, janela): 
-        if not hasattr(janela, "get_size"): # Certifica que a janela é uma Surface do Pygame
-            raise TypeError("atualizar_rect espera receber a janela (Surface), não uma tupla")
-
         w, h = janela.get_size()
         self.rect = pygame.Rect(
             int(w * self.rel_rect[0]),
@@ -70,10 +69,12 @@ class InputBox:
             eye_y = self.rect.y + (self.rect.height - self.olho_tamanho_icone) // 2
             self.olho_rect.topleft = (eye_x, eye_y)
 
-    def checar_eventos(self, evento):
+    def checar_eventos(self, evento, tela):
         if evento.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(evento.pos):
                 self.ativo = True
+                if tela.mensagem:
+                    tela.mensagem = ""
                 self.cursor_visivel = True
                 self.cursor_timer = 0.0
                 if self.is_senha and self.olho_rect and self.olho_rect.collidepoint(evento.pos):
@@ -88,7 +89,7 @@ class InputBox:
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_BACKSPACE:
                     self.apagar_segurado = True
-                    self.apagar_timer = 0.0
+                    self.timer = 0.0
                     if self.text:
                         self.text = self.text[:-1]
                 elif evento.key == pygame.K_RETURN:
@@ -97,14 +98,19 @@ class InputBox:
                     clip_text = pygame.scrap.get(pygame.SCRAP_TEXT)
                     if clip_text:
                         self.text += clip_text.decode('utf-8')
-                else:
-                    if evento.unicode and evento.unicode.isprintable():
-                        self.text += evento.unicode
+                elif evento.unicode and evento.unicode.isprintable():
+                    self.text += evento.unicode
+                    self.ultima_tecla = evento.unicode
+                    self.tecla_segurada = True
 
             elif evento.type == pygame.KEYUP:
                 if evento.key == pygame.K_BACKSPACE:
                     self.apagar_segurado = False
-                    self.apagar_timer = 0.0
+                    
+                elif evento.unicode == self.ultima_tecla:
+                    self.tecla_segurada = False
+
+                self.timer = 0.0
 
     def atualizar(self):
         # Controla o piscar do cursor
@@ -117,13 +123,19 @@ class InputBox:
 
         # Lógica para repetir backspace ao segurar a tecla
         if self.ativo and self.apagar_segurado:
-            print(self.apagar_timer)
-            self.apagar_timer += dt
-            if self.apagar_timer >= self.BACKSPACE_REPEAT_DELAY + self.BACKSPACE_REPEAT_INTERVAL:
-                self.apagar_timer = self.BACKSPACE_REPEAT_DELAY
+            self.timer += dt
+            if self.timer >= self.REPEAT_DELAY + self.REPEAT_INTERVAL:
+                self.timer = self.REPEAT_DELAY
                 if self.text:
-                    self.text = self.text[:-dt//self.BACKSPACE_REPEAT_INTERVAL+1] if dt//self.BACKSPACE_REPEAT_INTERVAL > 1 else self.text[:-1]
-                    print(dt, config.frames, -dt//self.BACKSPACE_REPEAT_INTERVAL+1)
+                    self.text = self.text[:-dt//self.REPEAT_INTERVAL+1] if dt//self.REPEAT_INTERVAL > 1 else self.text[:-1]
+        
+        # Lógica para repetir tecla segurada         
+        if self.ativo and self.tecla_segurada:
+            self.timer += dt
+            if self.timer >= self.REPEAT_DELAY + self.REPEAT_INTERVAL:
+                self.timer = self.REPEAT_DELAY
+                print("teste")
+                self.text += self.ultima_tecla
 
     def exibir(self, janela):
         pygame.draw.rect(janela, self.tema["input_bg"], self.rect, border_radius=12)

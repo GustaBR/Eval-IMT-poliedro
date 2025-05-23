@@ -34,5 +34,6 @@ while execucao:
     
     gerenciador.atualizar()
     gerenciador.exibir(janela)
+
     cronometro.tick(frames)
     pygame.display.flip()

@@ -18,7 +18,6 @@ class GerenciadorTelas:
         if self.tela_atual:
             self.tela_atual.atualizar()
 
-
     def exibir(self, janela):
         if self.tela_atual:
             self.tela_atual.exibir(janela)

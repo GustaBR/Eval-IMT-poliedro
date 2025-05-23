@@ -1,10 +1,8 @@
 import pygame
 import mysql.connector
-from mysql.connector import Error
-from config import Tema_Poliedro, fonte_negrito, fonte_regular, som_erro, som_correto, icone_usuario, icone_cadeado, imagem, dt
+from config import Tema_Poliedro, fonte_negrito, fonte_regular, icone_usuario, icone_cadeado, imagem, dt
 from input_box import InputBox
 from botao_login import BotaoLogin
-from menu_tela import MenuTela
 
 
 class LoginTela:
@@ -16,18 +14,17 @@ class LoginTela:
         self.input_usuario = InputBox(
             (0.2, 0.48, 0.6, 0.068), "Email de Usuário", icone_usuario, is_senha=False)
         self.input_senha = InputBox(
-            (0.2, 0.60, 0.6, 0.068), "Senha", icone_cadeado, is_senha=True)
+            (0.2, 0.60, 0.6, 0.068),"Senha", icone_cadeado, is_senha=True)
 
         self.botao_login = BotaoLogin(
                 rel_rect=(0.2, 0.72, 0.6, 0.09),
                 text="Entrar",
-                on_click=self.tentar_login
+                tela=self
             )
 
         # Mensagem de erro ou sucesso
         self.mensagem = ""
         self.mensagem_cor = self.tema["error"]
-        self.mensagem_timer = 0
 
         # Tipo de usuário logado: None, "aluno" ou "professor"
         self.usuario_tipo = None
@@ -52,72 +49,15 @@ class LoginTela:
             return None
 
     def checar_eventos(self, evento):
-        self.input_usuario.checar_eventos(evento)
-        self.input_senha.checar_eventos(evento)
+        self.input_usuario.checar_eventos(evento, self)
+        self.input_senha.checar_eventos(evento, self)
 
         if self.botao_login:
-            self.botao_login.handle_event(evento)
-
-    def tentar_login(self):
-        usuario = self.input_usuario.text.strip()
-        senha = self.input_senha.text.strip()
-
-        if not usuario or not senha:
-            self.definir_mensagem("Preencha todos os campos.", self.tema["error"])
-            if som_erro:
-                som_erro.play()
-            return
-
-        conn = self.conectar_banco()
-        if conn is None:
-            self.definir_mensagem("Erro de conexão com o banco.", self.tema["error"])
-            if som_erro:
-                som_erro.play()
-            return
-
-        try:
-            cursor = conn.cursor()
-
-            # Tenta logar como aluno
-            query_aluno = "SELECT * FROM aluno WHERE mailAluno = %s AND senhaAluno = %s"
-            cursor.execute(query_aluno, (usuario, senha))
-            resultado = cursor.fetchone()
-
-            if resultado:
-                self.usuario_tipo = "aluno"
-                self.definir_mensagem("Login aluno bem sucedido!", self.tema["accent"])
-                if som_correto:
-                    som_correto.play()
-                conn.close()
-                self.gerenciador.trocar_tela(MenuTela)
-
-            # Se não for aluno, tenta professor
-            query_professor = "SELECT * FROM professor WHERE mailProf = %s AND senhaProf = %s"
-            cursor.execute(query_professor, (usuario, senha))
-            resultado = cursor.fetchone()
-
-            if resultado:
-                self.usuario_tipo = "professor"
-                self.definir_mensagem("Login professor bem sucedido!", self.tema["accent"])
-                if som_correto:
-                    som_correto.play()
-            else:
-                self.usuario_tipo = None
-                self.definir_mensagem("Usuário ou senha incorretos.", self.tema["error"])
-                if som_erro:
-                    som_erro.play()
-
-            conn.close()
-        except Error as e:
-            print(f"Erro ao consultar o banco: {e}")
-            self.definir_mensagem("Erro ao consultar o banco.", self.tema["error"])
-            if som_erro:
-                som_erro.play()
+            self.botao_login.checar_eventos(evento, self)
 
     def definir_mensagem(self, texto, cor):
         self.mensagem = texto
         self.mensagem_cor = cor
-        self.mensagem_timer = 3
 
     def atualizar(self):
         janela = pygame.display.get_surface()
@@ -134,13 +74,7 @@ class LoginTela:
             self.botao_login.set_active(campos_preenchidos)
             self.botao_login.update(None)
 
-        if self.mensagem_timer > 0:
-            self.mensagem_timer -= dt
-        else:
-            self.mensagem = ""
-
     def exibir(self, janela):
-
         janela.fill(self.cor_fundo)
         largura, altura = janela.get_size()
 
