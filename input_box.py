@@ -134,7 +134,6 @@ class InputBox:
             self.timer += dt
             if self.timer >= self.REPEAT_DELAY + self.REPEAT_INTERVAL:
                 self.timer = self.REPEAT_DELAY
-                print("teste")
                 self.text += self.ultima_tecla
 
     def exibir(self, janela):
