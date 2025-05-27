@@ -4,7 +4,7 @@ from botao_menu import BotaoMenu
 from sys import exit
 from jogo_tela import JogoTela
 
-class MenuTela(): 
+class MenuTelaAluno(): 
     def __init__(self, gerenciador):
         self.gerenciador = gerenciador
 

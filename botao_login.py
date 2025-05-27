@@ -2,7 +2,8 @@ import pygame
 from config import LARGURA_JANELA, ALTURA_JANELA
 from mysql.connector import Error
 from config import Tema_Poliedro, som_erro, som_correto
-from menu_tela import MenuTela
+from menu_tela_aluno import MenuTelaAluno
+from menu_tela_professor import MenuTelaProfessor
 
 class BotaoLogin:
     def __init__(self, rel_rect, texto, tela, active=True):
@@ -118,7 +119,7 @@ class BotaoLogin:
                 if som_correto:
                     som_correto.play()
                 conn.close()
-                self.tela.gerenciador.trocar_tela(MenuTela)
+                self.tela.gerenciador.trocar_tela(MenuTelaAluno)
 
             # Se não for aluno, tenta professor
             query_professor = "SELECT * FROM professor WHERE mailProf = %s AND senhaProf = %s"
@@ -130,6 +131,7 @@ class BotaoLogin:
                 self.tela.definir_mensagem("Login professor bem sucedido!", self.tema["accent"])
                 if som_correto:
                     som_correto.play()
+                self.tela.gerenciador.trocar_tela(MenuTelaProfessor)
             else:
                 self.usuario_tipo = None
                 self.tela.definir_mensagem("Usuário ou senha incorretos.", self.tema["error"])
