@@ -1,6 +1,6 @@
 import config
 
-class Jogo:
+class JogoTela:
     def __init__(self, gerenciador):
         # Atributos da tela
         ...

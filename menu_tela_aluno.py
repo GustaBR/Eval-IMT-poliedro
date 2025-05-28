@@ -1,27 +1,27 @@
 import pygame
 import config
-from botao import Botao
+from botao_menu import BotaoMenu
 from sys import exit
-from jogo import Jogo
+from jogo_tela import JogoTela
 
-class Menu(): 
+class MenuTelaAluno(): 
     def __init__(self, gerenciador):
         self.gerenciador = gerenciador
 
         # Botões
         ## Botão Jogar
-        self.botao_jogar = Botao(
+        self.botao_jogar = BotaoMenu(
             texto="Jogar",
             pos=config.figma_para_tela(51, 453),
             cor_padrao=config.LARANJA,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
             fonte=config.fonte_botao,
-            acao=lambda: self.gerenciador.trocar_tela(Jogo)
+            acao=lambda: self.gerenciador.trocar_tela(JogoTela)
             )
 
         ## Botão Questões
-        self.botao_questoes = Botao(
+        self.botao_questoes = BotaoMenu(
             texto="Questões",
             pos=config.figma_para_tela(51, 560),
             cor_padrao=config.VINHO,
@@ -31,7 +31,7 @@ class Menu():
             )
 
         ## Botão Estatísticas
-        self.botao_estatisticas = Botao(
+        self.botao_estatisticas = BotaoMenu(
             texto="Estatísticas",
             pos=config.figma_para_tela(51, 667),
             cor_padrao=config.AZUL_CLARO,
@@ -41,7 +41,7 @@ class Menu():
         )
 
         ## Botão Configurações
-        self.botao_configuracoes = Botao(
+        self.botao_configuracoes = BotaoMenu(
             texto="Configurações",
             pos=config.figma_para_tela(51, 774),
             cor_padrao=config.SALMAO,
@@ -51,7 +51,7 @@ class Menu():
         )
 
         ## Botão Sair
-        self.botao_sair = Botao(
+        self.botao_sair = BotaoMenu(
             texto="Sair",
             pos=config.figma_para_tela(51, 881),
             cor_padrao=config.VERMELHO,
@@ -88,42 +88,20 @@ class Menu():
         for botao in self.botoes:
             botao.atualizar_hover()
         
-    def exibir(self, tela):
-        tela.fill(config.BRANCO_FUNDO)
-        tela.fill(config.VERMELHO, ((0, 0), config.figma_para_tela(1440, 404)))
+    def exibir(self, janela):
+        janela.fill(config.BRANCO_FUNDO)
+        janela.fill(config.VERMELHO, ((0, 0), config.figma_para_tela(1440, 404)))
 
         # Logo
         x_logo, y_logo = config.figma_para_tela(49, 55)
 
         for i, (letra, cor) in enumerate(self.letras_logo):
             parte = config.fonte_titulo.render(letra, True, cor)
-            tela.blit(parte, (x_logo, y_logo))
+            janela.blit(parte, (x_logo, y_logo))
             x_logo += parte.get_width()
                 
             if i < len(self.letras_logo) - 1:
                 x_logo += self.espacamentos.get(letra, self.espacamentos["padrao"])
 
         for botao in self.botoes:
-            botao.exibir_botao(tela)
-
-
-# Teste da tela
-if __name__ == "__main__":
-    pygame.init()
-    config.criar_fontes()
-    tela = pygame.display.set_mode((config.LARGURA_TELA, config.ALTURA_TELA))
-    menu = Menu()
-    cronometro = pygame.time.Clock()
-
-    # Eventos da janela
-    execucao = True
-    while execucao:
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                execucao = False
-        
-        menu.atualizar()
-        menu.exibir(tela)
-
-        pygame.display.flip()
-        cronometro.tick(60)
+            botao.exibir_botao(janela)

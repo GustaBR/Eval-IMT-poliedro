@@ -1,13 +1,9 @@
-from menu import Menu
+from menu_tela_aluno import MenuTelaAluno
 
 class GerenciadorTelas:
     def __init__(self):
         self.telas = {}
         self.tela_atual = None
-
-        self.classes_telas = {
-            Menu: Menu
-        }
 
     def trocar_tela(self, classe_tela):
         if classe_tela not in self.telas:
