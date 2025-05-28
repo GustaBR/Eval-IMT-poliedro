@@ -1,5 +1,5 @@
 import mysql.connector  # type: ignore
-from jogador import Jogador
+from rank.jogador import Jogador
 
 class Database:
     @staticmethod

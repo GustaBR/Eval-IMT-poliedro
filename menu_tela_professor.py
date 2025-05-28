@@ -3,6 +3,7 @@ import config
 from botao_menu import BotaoMenu
 from sys import exit
 from cadastrar_usuarios.componentes.cadastrar_usuarios_tela import CadastrarUsuariosTela
+from rank.ranking_tela import RankingTela
 
 class MenuTelaProfessor():
     def __init__(self, gerenciador):
@@ -17,6 +18,7 @@ class MenuTelaProfessor():
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
             fonte=config.fonte_botao,
+            acao=lambda: self.gerenciador.trocar_tela(RankingTela)
             )
 
         ## Botão Questões
