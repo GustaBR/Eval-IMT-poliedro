@@ -139,6 +139,9 @@ class CadastrarUsuariosTela:
                 self._apagar_caractere()
             elif evento.key == pygame.K_RETURN:
                 self.cadastrar_usuario()
+            elif evento.key == pygame.K_ESCAPE:
+                from menu_tela_professor import MenuTelaProfessor
+                self.gerenciador.trocar_tela(MenuTelaProfessor)
             else:
                 self._inserir_caractere(evento.unicode)
 
