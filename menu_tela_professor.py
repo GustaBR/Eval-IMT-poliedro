@@ -2,6 +2,7 @@ import pygame
 import config
 from botao_menu import BotaoMenu
 from sys import exit
+from cadastrar_usuarios.componentes.cadastrar_usuarios_tela import CadastrarUsuariosTela
 
 class MenuTelaProfessor():
     def __init__(self, gerenciador):
@@ -28,14 +29,15 @@ class MenuTelaProfessor():
             fonte=config.fonte_botao
             )
 
-        ## Botão Alunos
+        ## Botão Usuários
         self.botao_alunos = BotaoMenu(
-            texto="Alunos",
+            texto="Usuários",
             pos=config.figma_para_tela(51, 723),
             cor_padrao=config.AZUL_CLARO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
-            fonte=config.fonte_botao
+            fonte=config.fonte_botao,
+            acao=lambda: self.gerenciador.trocar_tela(CadastrarUsuariosTela)
         )
 
         ## Botão Sair
@@ -80,7 +82,7 @@ class MenuTelaProfessor():
         janela.fill(config.BRANCO_FUNDO)
         janela.fill(config.VERMELHO, ((0, 0), config.figma_para_tela(1440, 404)))
 
-        # Logo
+        # Logo EVAL
         x_logo, y_logo = config.figma_para_tela(49, 55)
 
         for i, (letra, cor) in enumerate(self.letras_logo):

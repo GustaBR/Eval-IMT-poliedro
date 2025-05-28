@@ -26,8 +26,3 @@ def main():
         cadastro_tela.desenhar(tela)
 
         clock.tick(60)
-
-    pygame.quit()
-
-if __name__ == "__main__":
-    main() # Rodar o programa a partir da main

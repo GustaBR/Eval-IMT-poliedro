@@ -1,6 +1,6 @@
 import pygame
 
-class TipoUsuarioTela:
+class TipoUsuario:
     def __init__(self, aluno_rect, prof_rect, fonte, cores):
         self.tipo = "aluno"
         self.rect_aluno = aluno_rect

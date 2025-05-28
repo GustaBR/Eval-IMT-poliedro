@@ -1,6 +1,6 @@
 import pygame
 
-class CampoTextoTela:
+class CampoTexto:
     def __init__(self, rect, placeholder, max_len=50, aceita_caracteres=None):
         self.rect = rect
         self.texto = ""

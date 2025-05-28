@@ -8,7 +8,7 @@ from gerenciador_telas import GerenciadorTelas
 
 
 # Criando a janela
-janela = pygame.display.set_mode((LARGURA_JANELA, ALTURA_JANELA))
+janela = pygame.display.set_mode((LARGURA_JANELA, ALTURA_JANELA), pygame.RESIZABLE)
 
 # Definindo título e ícone da janela
 pygame.display.set_caption("Eval")

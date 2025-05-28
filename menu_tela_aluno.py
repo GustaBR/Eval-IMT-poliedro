@@ -92,7 +92,7 @@ class MenuTelaAluno():
         janela.fill(config.BRANCO_FUNDO)
         janela.fill(config.VERMELHO, ((0, 0), config.figma_para_tela(1440, 404)))
 
-        # Logo
+        # Logo EVAL
         x_logo, y_logo = config.figma_para_tela(49, 55)
 
         for i, (letra, cor) in enumerate(self.letras_logo):
