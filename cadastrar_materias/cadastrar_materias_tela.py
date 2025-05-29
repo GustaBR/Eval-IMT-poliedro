@@ -14,7 +14,6 @@ VERDE = (34, 139, 34)
 VERMELHO = (220, 20, 60)
 
 # Fontes
-pygame.init()
 FONT = pygame.font.Font(None, 32)
 FONT_SMALL = pygame.font.Font(None, 24)
 
@@ -38,9 +37,15 @@ class CadastrarMateriasTela:
         self.confirm_excluir = False
         self.materia_para_excluir = None
 
-        self.clock = pygame.time.Clock()
-
-        self.bg_image = pygame.image.load("cadastrar_materias/fundo.jpg").convert()
+        self.botao_menu = BotaoMenu(
+            texto="Menu",
+            pos=(config.LARGURA_JANELA - 285, config.ALTURA_JANELA - 55),
+            cor_padrao=config.VERMELHO,
+            cor_texto=config.PRETO,
+            cor_hover=config.BRANCO,
+            fonte=config.fonte_botao,
+            acao=lambda: self.retornar()
+        )
 
         self.atualizar_lista_materias()
         self.atualizar_layout()
@@ -53,6 +58,10 @@ class CadastrarMateriasTela:
         self.button_rect.topleft = (self.input_box.rect.left, self.input_box.rect.bottom + 10)
         self.button_rect.width = 130
         self.button_rect.height = 40
+
+    def retornar(self):
+        from menu_tela_professor import MenuTelaProfessor
+        self.gerenciador.trocar_tela(MenuTelaProfessor)
 
     def atualizar_lista_materias(self):
         materias, erro = Database.buscar_materias()
@@ -90,7 +99,6 @@ class CadastrarMateriasTela:
     def checar_eventos(self, evento):
         if evento.type == pygame.VIDEORESIZE:
             config.LARGURA_JANELA, config.ALTURA_JANELA = evento.w, evento.h
-            self.bg_image = pygame.transform.scale(pygame.image.load("cadastrar_materias/fundo.jpg").convert(), (config.LARGURA_JANELA, config.ALTURA_JANELA))
             self.atualizar_layout()
             self.atualizar_lista_materias()
         elif evento.type == pygame.MOUSEWHEEL:
@@ -146,6 +154,7 @@ class CadastrarMateriasTela:
                 else:
                     self.message = "Digite o nome da matéria antes de cadastrar."
                     self.message_color = VERMELHO
+            self.botao_menu.realizar_acao()
 
         if evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN and self.input_box.active:
             nome = self.input_box.get_text()
@@ -159,9 +168,13 @@ class CadastrarMateriasTela:
             else:
                 self.message = "Digite o nome da matéria antes de cadastrar."
                 self.message_color = VERMELHO
+        if evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
+            from menu_tela_professor import MenuTelaProfessor
+            self.gerenciador.trocar_tela(MenuTelaProfessor)
+
 
     def atualizar(self):
-        ...
+        self.botao_menu.atualizar_hover()
         # Definir atualizações nos cálculos de redimensionamento de tela
 
     
@@ -190,6 +203,8 @@ class CadastrarMateriasTela:
         if self.message:
             msg_surface = FONT_SMALL.render(self.message, True, self.message_color)
             janela.blit(msg_surface, (self.input_box.rect.left, self.input_box.rect.bottom + 60))
+
+        self.botao_menu.exibir_botao(janela)
 
         if self.confirm_excluir:
             self.botao_sim, self.botao_nao = self.desenhar_confirmacao(janela)

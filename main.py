@@ -2,7 +2,6 @@ import pygame
 pygame.init()
 
 from config import LARGURA_JANELA, ALTURA_JANELA, criar_fontes, frames, dt
-from menu_tela_aluno import MenuTelaAluno
 from login_tela import LoginTela
 from gerenciador_telas import GerenciadorTelas
 

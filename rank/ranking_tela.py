@@ -56,8 +56,11 @@ class RankingTela:
             else:
                 if evento.key == pygame.K_UP:
                     self.scroll_offset = max(self.scroll_offset - self.ITEM_ALTURA, 0)
-                elif evento.key == pygame.K_DOWN:
+                if evento.key == pygame.K_DOWN:
                     self.scroll_offset += self.ITEM_ALTURA
+                if evento.key == pygame.K_ESCAPE:
+                    from menu_tela_professor import MenuTelaProfessor
+                    self.gerenciador.trocar_tela(MenuTelaProfessor)
 
     def atualizar(self):
         ...
