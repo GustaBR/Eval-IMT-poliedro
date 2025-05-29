@@ -1,4 +1,4 @@
-from menu_tela import MenuTela
+from menu_tela_aluno import MenuTelaAluno
 
 class GerenciadorTelas:
     def __init__(self):

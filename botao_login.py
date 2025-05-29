@@ -2,16 +2,19 @@ import pygame
 from config import LARGURA_JANELA, ALTURA_JANELA
 from mysql.connector import Error
 from config import Tema_Poliedro, som_erro, som_correto
-from menu_tela import MenuTela
+from menu_tela_aluno import MenuTelaAluno
+from menu_tela_professor import MenuTelaProfessor
 
 class BotaoLogin:
-    def __init__(self, rel_rect, text, tela, active=True):
+    def __init__(self, rel_rect, texto, tela, active=True):
         self.rel_rect = rel_rect
-        self.text = text
+        self.texto = texto
         self.active = active
         self.hovered = False
         self.enter = False
-        self.processar_proximo = False
+        self.processar = False
+        self.processar_completo = False
+        self.pular_checagem = False
         self.tela = tela
         self.tema = Tema_Poliedro
 
@@ -43,25 +46,37 @@ class BotaoLogin:
         if not self.active:
             return False
 
-        if self.processar_proximo:
+        self.color = self.colors["hover"] if self.hovered else self.colors["normal"]
+
+        if not self.processar and self.processar_completo and self.pular_checagem:
+            self.processar_completo = False
+            self.pular_checagem = False
+
+        if self.pular_checagem:
+            self.processar = True
+
+        if not self.pular_checagem:
+            if evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN and pygame.K_RETURN:
+                tela.mensagem = ""
+                self.color = self.colors["hover"]
+                self.pular_checagem = True
+
+            if evento.type == pygame.MOUSEMOTION:
+                self.hovered = self.rect.collidepoint(evento.pos)
+
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if evento.button == 1 and self.hovered:
+                    tela.mensagem = ""
+                    self.color = self.colors["hover"]
+                    self.pular_checagem = True
+
+        if self.pular_checagem and self.processar and not self.processar_completo:
             usuario, senha = tela.input_usuario.text.strip(), tela.input_senha.text.strip()
             self.tentar_login(usuario, senha)
-
-        self.processar_proximo = False
-
-        if evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN and not self.processar_proximo:
-            tela.mensagem = ""
-            self.color = self.colors["hover"]
-            self.processar_proximo = True
-
-        if evento.type == pygame.MOUSEMOTION:
-            self.hovered = self.rect.collidepoint(evento.pos)
-
-        if evento.type == pygame.MOUSEBUTTONDOWN:
-            if evento.button == 1 and self.hovered:
-                tela.mensagem = ""
-                self.processar_proximo = True
-
+            pygame.event.clear()
+            self.color = self.colors["normal"]
+            self.processar_completo = True
+            self.processar = False
 
     def update(self, db):
         self.atualizar_rect() # Atualiza a posição e tamanho do botão 
@@ -69,13 +84,11 @@ class BotaoLogin:
 
     def exibir(self, janela):
         if not self.active:
-            self.color = self.colors["inactive"] # Escolhe a cor de acordo com o estado do botão
-        else:
-            self.color = self.colors["hover"] if (self.hovered or self.processar_proximo) else self.colors["normal"]
+            self.color = self.colors["inactive"] # Cor inativa do botão
 
         pygame.draw.rect(janela, self.color, self.rect, border_radius=12)  # Desenha o retângulo arredondado
 
-        text_surf = self.font.render(self.text, True, (255, 255, 255))  # Renderiza o texto branco no centro do botão
+        text_surf = self.font.render(self.texto, True, (255, 255, 255))  # Renderiza o texto branco no centro do botão
         text_rect = text_surf.get_rect(center=self.rect.center)
         janela.blit(text_surf, text_rect)
 
@@ -106,7 +119,7 @@ class BotaoLogin:
                 if som_correto:
                     som_correto.play()
                 conn.close()
-                self.tela.gerenciador.trocar_tela(MenuTela)
+                self.tela.gerenciador.trocar_tela(MenuTelaAluno)
 
             # Se não for aluno, tenta professor
             query_professor = "SELECT * FROM professor WHERE mailProf = %s AND senhaProf = %s"
@@ -118,6 +131,7 @@ class BotaoLogin:
                 self.tela.definir_mensagem("Login professor bem sucedido!", self.tema["accent"])
                 if som_correto:
                     som_correto.play()
+                self.tela.gerenciador.trocar_tela(MenuTelaProfessor)
             else:
                 self.usuario_tipo = None
                 self.tela.definir_mensagem("Usuário ou senha incorretos.", self.tema["error"])

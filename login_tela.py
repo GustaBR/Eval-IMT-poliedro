@@ -1,5 +1,6 @@
 import pygame
 import mysql.connector
+from mysql.connector import Error
 from config import Tema_Poliedro, fonte_negrito, fonte_regular, icone_usuario, icone_cadeado, imagem, dt
 from input_box import InputBox
 from botao_login import BotaoLogin
@@ -18,7 +19,7 @@ class LoginTela:
 
         self.botao_login = BotaoLogin(
                 rel_rect=(0.2, 0.72, 0.6, 0.09),
-                text="Entrar",
+                texto="Entrar",
                 tela=self
             )
 

@@ -84,3 +84,21 @@ def carregar_audio(nome):
 som_clicar = carregar_audio("click.wav") # Arquivo de áudio
 som_erro = carregar_audio("error.wav") # Arquivo de áudio
 som_correto = carregar_audio("success.wav") # Arquivo de áudio
+
+# Configurações tela de cadastro (NAO MEXER SE NAO O UNIVERSO EXPLODE A MENOS QUE TENHA CERTEZA DO QUE ESTA FAZENDO)
+LARGURA_CAMPO = int(700 * LARGURA_JANELA / 1200)
+ALTURA_CAMPO = int(70 * ALTURA_JANELA / 900)
+ESPACO_ENTRE = int(130 * ALTURA_JANELA / 900)
+
+COR_ATIVO = (30, 30, 30)
+COR_INATIVO = (160, 160, 160)
+COR_BORDA_ATIVO = (100, 180, 255)
+COR_BORDA_INATIVO = (200, 200, 200)
+COR_BOTAO = (70, 150, 230)
+COR_BOTAO_HOVER = (100, 180, 255)
+COR_MSG = (200, 50, 50)
+COR_SELECAO = (70, 130, 220)
+COR_PLACEHOLDER = (180, 180, 180)
+
+FONTE_PADRAO = pygame.font.Font(None, int(42 * ALTURA_JANELA / 1200))
+FONTE_MSG = pygame.font.Font(None, int(32 * ALTURA_JANELA / 1200))
