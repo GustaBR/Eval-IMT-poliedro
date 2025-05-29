@@ -27,5 +27,5 @@ class BotaoMenu:
         tela.blit(texto, texto_rect)
 
     def realizar_acao(self):
-        if self.acao:
+        if self.acao and self.hovered:
             self.acao()

@@ -171,7 +171,6 @@ class CadastrarUsuariosTela:
                 self.ultimo_backspace = tempo_atual
 
     def exibir(self, janela):
-        
         altura = config.ALTURA_JANELA
         largura = config.LARGURA_JANELA
         for y in range(altura):

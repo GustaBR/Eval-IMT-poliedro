@@ -3,6 +3,7 @@ import config
 from botao_menu import BotaoMenu
 from sys import exit
 from cadastrar_usuarios.componentes.cadastrar_usuarios_tela import CadastrarUsuariosTela
+from cadastrar_materias.cadastrar_materias_tela import CadastrarMateriasTela
 from rank.ranking_tela import RankingTela
 
 class MenuTelaProfessor():
@@ -13,7 +14,7 @@ class MenuTelaProfessor():
         ## Botão Ranking
         self.botao_ranking = BotaoMenu(
             texto="Ranking",
-            pos=config.figma_para_tela(51, 475),
+            pos=config.figma_para_tela(51, 453),
             cor_padrao=config.LARANJA,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
@@ -24,7 +25,7 @@ class MenuTelaProfessor():
         ## Botão Questões
         self.botao_questoes = BotaoMenu(
             texto="Questões",
-            pos=config.figma_para_tela(51, 599),
+            pos=config.figma_para_tela(51, 560),
             cor_padrao=config.VINHO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
@@ -34,7 +35,7 @@ class MenuTelaProfessor():
         ## Botão Usuários
         self.botao_alunos = BotaoMenu(
             texto="Usuários",
-            pos=config.figma_para_tela(51, 723),
+            pos=config.figma_para_tela(51, 667),
             cor_padrao=config.AZUL_CLARO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
@@ -42,10 +43,21 @@ class MenuTelaProfessor():
             acao=lambda: self.gerenciador.trocar_tela(CadastrarUsuariosTela)
         )
 
+        ## Botão Matérias
+        self.botao_materias = BotaoMenu(
+            texto="Matérias",
+            pos=config.figma_para_tela(51, 774),
+            cor_padrao=config.SALMAO,
+            cor_texto=config.PRETO,
+            cor_hover=config.BRANCO,
+            fonte=config.fonte_botao,
+            acao=lambda: self.gerenciador.trocar_tela(CadastrarMateriasTela)
+        )
+
         ## Botão Sair
         self.botao_sair = BotaoMenu(
             texto="Sair",
-            pos=config.figma_para_tela(51, 847),
+            pos=config.figma_para_tela(51, 881),
             cor_padrao=config.VERMELHO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
@@ -54,7 +66,7 @@ class MenuTelaProfessor():
         )
 
         self.botoes = [self.botao_ranking, self.botao_questoes,
-            self.botao_alunos, self.botao_sair]
+            self.botao_alunos, self.botao_materias, self.botao_sair]
 
         # Logo EVAL
         self.letras_logo = [
@@ -73,8 +85,7 @@ class MenuTelaProfessor():
     def checar_eventos(self, evento):
         if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
             for botao in self.botoes:
-                if botao.hovered:
-                    botao.realizar_acao()
+                botao.realizar_acao()
 
     def atualizar(self):
         for botao in self.botoes:

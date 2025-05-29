@@ -2,15 +2,30 @@ import pygame
 import os
 
 # Número de frames/s
-frames = 60
+frames = 30
 
 # Tempo entre frames
 cronometro = pygame.time.Clock()
 dt = cronometro.tick(frames)
 
+# Coletando tamanho da tela:
+largura, altura = pygame.display.set_mode((0, 0), pygame.FULLSCREEN).get_size()
+pygame.display.quit()
+pygame.display.init()
+
+# Razão de proporção da tela
+razao_proporcao = largura / altura 
+
 # Tamanho da janela
-LARGURA_JANELA = 720
-ALTURA_JANELA = 512
+if largura/altura == 16/9:
+    LARGURA_JANELA = int(largura/1.2)
+    ALTURA_JANELA = int(altura/1.2)
+elif largura/altura > 16/9:
+    ALTURA_JANELA = int(altura/1.2)
+    LARGURA_JANELA = int(ALTURA_JANELA * 16/9)
+else:
+    LARGURA_JANELA = int(largura/1.2)
+    ALTURA_JANELA = int(LARGURA_JANELA * 9/16)
 
 # Retorna a posição do elemento na tela com base no figma
 def figma_para_tela(x_figma, y_figma):

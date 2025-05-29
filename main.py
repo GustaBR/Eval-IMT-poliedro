@@ -23,7 +23,7 @@ criar_fontes()
 gerenciador = GerenciadorTelas()
 gerenciador.trocar_tela(LoginTela)
 cronometro = pygame.time.Clock()
- 
+
 # Eventos da janela
 execucao = True
 while execucao:

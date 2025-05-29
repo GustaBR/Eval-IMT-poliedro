@@ -78,6 +78,9 @@ class BotaoLogin:
             self.processar_completo = True
             self.processar = False
 
+        if evento.type == pygame.VIDEORESIZE:
+            pass
+
     def update(self, db):
         self.atualizar_rect() # Atualiza a posição e tamanho do botão 
         
