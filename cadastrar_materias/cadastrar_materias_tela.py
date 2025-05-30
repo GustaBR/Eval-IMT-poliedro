@@ -39,7 +39,7 @@ class CadastrarMateriasTela:
 
         self.botao_menu = BotaoMenu(
             texto="Menu",
-            pos=(config.LARGURA_JANELA - 285, config.ALTURA_JANELA - 55),
+            pos=(config.LARGURA_JANELA - 285 * 16/10 , config.ALTURA_JANELA - 55 * 16/10 ),
             cor_padrao=config.VERMELHO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
@@ -181,7 +181,7 @@ class CadastrarMateriasTela:
     def exibir(self, janela):
         #self.bg_image = pygame.transform.scale(self.bg_image, (config.LARGURA_JANELA, config.ALTURA_JANELA))
         #janela.blit(self.bg_image, (0, 0))
-        janela.fill(config.BRANCO)
+        janela.fill(config.BRANCO_FUNDO)
 
         instr_text = FONT_SMALL.render("Digite o nome da matéria:", True, PRETO)
         janela.blit(instr_text, (self.input_box.rect.left, self.input_box.rect.top - 25))

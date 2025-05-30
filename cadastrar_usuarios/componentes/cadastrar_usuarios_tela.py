@@ -123,29 +123,30 @@ class CadastrarUsuariosTela:
                 return
             self.campo_atual = None
 
-        elif evento.type == pygame.KEYDOWN and self.campo_atual:
-            if evento.key == pygame.K_TAB:
-                ordem = ["nome", "email", "senha"]
-                if self.tipo_usuario.tipo == "professor":
-                    ordem.append("materia")
-                try:
-                    idx = ordem.index(self.campo_atual)
-                    self.campo_atual = ordem[(idx + 1) % len(ordem)]
-                except ValueError:
-                    self.campo_atual = ordem[0]
-            elif evento.key == pygame.K_BACKSPACE:
-                self.backspace_segurar = True
-                self.ultimo_backspace = pygame.time.get_ticks()
-                self._apagar_caractere()
-            elif evento.key == pygame.K_RETURN:
-                self.cadastrar_usuario()
-            elif evento.key == pygame.K_ESCAPE:
+        if evento.type == pygame.KEYDOWN:
+            if self.campo_atual:
+                if evento.key == pygame.K_TAB:
+                    ordem = ["nome", "email", "senha"]
+                    if self.tipo_usuario.tipo == "professor":
+                        ordem.append("materia")
+                    try:
+                        idx = ordem.index(self.campo_atual)
+                        self.campo_atual = ordem[(idx + 1) % len(ordem)]
+                    except ValueError:
+                        self.campo_atual = ordem[0]
+                if evento.key == pygame.K_BACKSPACE:
+                    self.backspace_segurar = True
+                    self.ultimo_backspace = pygame.time.get_ticks()
+                    self._apagar_caractere()
+                if evento.key == pygame.K_RETURN:
+                    self.cadastrar_usuario()
+                else:
+                    self._inserir_caractere(evento.unicode)
+            if evento.key == pygame.K_ESCAPE:
                 from menu_tela_professor import MenuTelaProfessor
                 self.gerenciador.trocar_tela(MenuTelaProfessor)
-            else:
-                self._inserir_caractere(evento.unicode)
 
-        elif evento.type == pygame.KEYUP and evento.key == pygame.K_BACKSPACE:
+        if evento.type == pygame.KEYUP and evento.key == pygame.K_BACKSPACE:
             self.backspace_segurar = False
 
     def _apagar_caractere(self):
