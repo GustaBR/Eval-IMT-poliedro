@@ -1,7 +1,7 @@
 import mysql.connector
 import random
-from config import CONFIGURACAO_BANCO_DADOS
-from tema.elementos_cores import Pergunta
+from jogo_perguntas.config import CONFIGURACAO_BANCO_DADOS
+from jogo_perguntas.tema.elementos_cores import Pergunta
 
 class GerenciadorBancoPerguntas:
     def __init__(self):

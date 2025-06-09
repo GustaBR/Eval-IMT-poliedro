@@ -2,7 +2,7 @@ import pygame
 import config
 from botao_menu import BotaoMenu
 from sys import exit
-from jogo_tela import JogoTela
+from jogo_perguntas.funcionamento_jogo import JogoTela
 
 class MenuTelaAluno(): 
     def __init__(self, gerenciador):

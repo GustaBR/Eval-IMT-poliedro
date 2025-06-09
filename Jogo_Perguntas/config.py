@@ -9,9 +9,6 @@ CONFIGURACAO_BANCO_DADOS = {
     'database': 'jogomilhao',
 }
 
-QUADROS_POR_SEGUNDO = 60
-LARGURA_TELA = 800
-ALTURA_TELA = 600
-DIRETORIO_ASSETS = "assets" # Pasta para fontes, imagens, etc.
+DIRETORIO_ASSETS = "assets" # Pasta para fontes, imagens, etc.Add commentMore actions
 NOME_ARQUIVO_FONTE_PRINCIPAL = 'Roboto-Regular.ttf'
 CAMINHO_IMAGEM_FUNDO_PERSONALIZADA = os.path.join(DIRETORIO_ASSETS, "fundo.jpg")

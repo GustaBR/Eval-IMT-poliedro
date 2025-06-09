@@ -1,6 +1,6 @@
 import pygame
 import os
-from config import DIRETORIO_ASSETS, NOME_ARQUIVO_FONTE_PRINCIPAL
+from jogo_perguntas.config import DIRETORIO_ASSETS, NOME_ARQUIVO_FONTE_PRINCIPAL
 
 class Tema:
     CORES = {

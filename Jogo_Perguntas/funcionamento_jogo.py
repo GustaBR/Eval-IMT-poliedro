@@ -2,29 +2,26 @@ import pygame
 import os 
 import random
 import time
-from config import (LARGURA_TELA, ALTURA_TELA, QUADROS_POR_SEGUNDO, CAMINHO_IMAGEM_FUNDO_PERSONALIZADA, DIRETORIO_ASSETS)
-from tema.tema_visual import Tema
-from interface.interface_grafica import GerenciadorInterface
-from interface.TelaSelecaoMateria import TelaSelecaoMateria
-from database.gerenciador_banco_dados import GerenciadorBancoPerguntas
-from tema.elementos_cores import Botao
+from config import LARGURA_JANELA, ALTURA_JANELA
+from jogo_perguntas.config import CAMINHO_IMAGEM_FUNDO_PERSONALIZADA, DIRETORIO_ASSETS
+from jogo_perguntas.tema.tema_visual import Tema
+from jogo_perguntas.interface.interface_grafica import GerenciadorInterface
+from jogo_perguntas.interface.selecao_materia_tela import TelaSelecaoMateria
+from jogo_perguntas.database.gerenciador_banco_dados import GerenciadorBancoPerguntas
+from jogo_perguntas.tema.elementos_cores import Botao
 
-class GerenciadorJogo:
-    def __init__(self):
-        pygame.init()
-        pygame.font.init() 
+class JogoTela:
+    def __init__(self, gerenciador):
+        # pygame.font.init() 
 
-        self.tela_principal = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
-        pygame.display.set_caption("Jogo do Milhão - Jogo de Perguntas")
-        self.clock_jogo = pygame.time.Clock()
-
-        self.interface_grafica = GerenciadorInterface(LARGURA_TELA, ALTURA_TELA)         
+        self.gerenciador = gerenciador
         self.gerenciador_banco = GerenciadorBancoPerguntas()
+        self.interface_grafica = GerenciadorInterface(LARGURA_JANELA, ALTURA_JANELA) 
         self.ids_perguntas_vistas_por_materia = {}
 
         self._inicializar_botoes_comuns_jogo()
         
-        self.tela_ativa_selecao_materia = TelaSelecaoMateria(LARGURA_TELA, ALTURA_TELA, self) 
+        self.tela_ativa_selecao_materia = TelaSelecaoMateria(LARGURA_JANELA, ALTURA_JANELA, self) 
 
         self.estado_jogo_atual = "SELECAO_MATERIA"
         self.nome_materia_atual = None
@@ -43,11 +40,11 @@ class GerenciadorJogo:
 
     def _inicializar_botoes_comuns_jogo(self):
         self.botoes_alternativas = []
-        margem_lateral_resp = LARGURA_TELA * 0.1
-        largura_botao_resp = LARGURA_TELA - 2 * margem_lateral_resp
-        altura_botao_resp = ALTURA_TELA * 0.07
-        espaco_vertical_resp = ALTURA_TELA * 0.02
-        y_inicio_respostas = ALTURA_TELA * 0.38 
+        margem_lateral_resp = LARGURA_JANELA * 0.1
+        largura_botao_resp = LARGURA_JANELA - 2 * margem_lateral_resp
+        altura_botao_resp = ALTURA_JANELA * 0.07
+        espaco_vertical_resp = ALTURA_JANELA * 0.02
+        y_inicio_respostas = ALTURA_JANELA * 0.38 
         
         fonte_botoes_jogo = self.interface_grafica.get_fonte_ui('media')
         for i in range(4):
@@ -61,11 +58,11 @@ class GerenciadorJogo:
             self.botoes_alternativas.append(botao_alt)
 
         num_botoes_acao_jogo = 3
-        largura_area_botoes_acao = LARGURA_TELA - 2 * margem_lateral_resp
+        largura_area_botoes_acao = LARGURA_JANELA - 2 * margem_lateral_resp
         espaco_entre_botoes_acao_jogo = 20 
         largura_botao_acao_jogo = (largura_area_botoes_acao - (num_botoes_acao_jogo - 1) * espaco_entre_botoes_acao_jogo) / num_botoes_acao_jogo
-        altura_botao_acao_jogo = ALTURA_TELA * 0.075
-        y_pos_botoes_acao_jogo = ALTURA_TELA - altura_botao_acao_jogo - ALTURA_TELA * 0.05
+        altura_botao_acao_jogo = ALTURA_JANELA * 0.075
+        y_pos_botoes_acao_jogo = ALTURA_JANELA - altura_botao_acao_jogo - ALTURA_JANELA * 0.05
 
         self.botao_dica = Botao(
             margem_lateral_resp, y_pos_botoes_acao_jogo, largura_botao_acao_jogo, altura_botao_acao_jogo,
@@ -101,8 +98,8 @@ class GerenciadorJogo:
             acao=self._cancelar_acao_pendente
         )
         
-        larg_botao_final = LARGURA_TELA * 0.4
-        alt_botao_final = ALTURA_TELA * 0.08
+        larg_botao_final = LARGURA_JANELA * 0.4
+        alt_botao_final = ALTURA_JANELA * 0.08
         self.botao_final_jogar_novamente = Botao(
             0,0, larg_botao_final, alt_botao_final,
             Tema.CORES['botao_reiniciar'], Tema.CORES['botao_hover'], Tema.CORES['borda_botao'],
@@ -113,8 +110,12 @@ class GerenciadorJogo:
             0,0, larg_botao_final, alt_botao_final,
             Tema.CORES['botao_sair'], Tema.CORES['botao_hover'], None, 
             "Sair do Jogo", fonte_botoes_jogo, Tema.CORES['texto_botao'], 10,
-            acao=self.encerrar_jogo
+            acao=lambda:self.retornar()
         )
+
+    def retornar(self):
+        from menu_tela_aluno import MenuTelaAluno
+        self.gerenciador.trocar_tela(MenuTelaAluno)
 
     def iniciar_rodada_materia(self, nome_materia_escolhida):
         self.nome_materia_atual = nome_materia_escolhida
@@ -290,106 +291,101 @@ class GerenciadorJogo:
         self.botao_pular.habilitado = True 
         self.botao_50_50.habilitado = True
 
-        self.tela_ativa_selecao_materia = TelaSelecaoMateria(LARGURA_TELA, ALTURA_TELA, self)
+        self.tela_ativa_selecao_materia = TelaSelecaoMateria(LARGURA_JANELA, ALTURA_JANELA, self)
         self.interface_grafica.exibir_notificacao("Escolha uma matéria!", "info")
     
     def encerrar_jogo(self):
         self.jogo_rodando = False
 
-    def executar_loop_principal(self):
-        self.jogo_rodando = True 
-        while self.jogo_rodando:
-            self.clock_jogo.tick(QUADROS_POR_SEGUNDO)
-            pos_mouse_atual = pygame.mouse.get_pos()
-
-            if self.estado_jogo_atual == "SELECAO_MATERIA":
-                if self.tela_ativa_selecao_materia:
-                    self.tela_ativa_selecao_materia.atualizar_hover_botoes(pos_mouse_atual)
-            elif self.estado_jogo_atual == "JOGANDO":
-                if self.tipo_confirmacao_pendente: 
-                    self.botao_popup_confirmar.verificar_hover(pos_mouse_atual)
-                    self.botao_popup_cancelar.verificar_hover(pos_mouse_atual)
-                elif self.objeto_pergunta_atual: 
-                    for botao_alt in self.botoes_alternativas: botao_alt.verificar_hover(pos_mouse_atual)
-                    self.botao_dica.verificar_hover(pos_mouse_atual)
-                    self.botao_50_50.verificar_hover(pos_mouse_atual)
-                    self.botao_pular.verificar_hover(pos_mouse_atual)
-            elif self.estado_jogo_atual == "FIM_DE_JOGO":
-                self.botao_final_jogar_novamente.verificar_hover(pos_mouse_atual)
-                self.botao_final_sair.verificar_hover(pos_mouse_atual)
-
-            for evento in pygame.event.get():
-                if evento.type == pygame.QUIT:
-                    self.encerrar_jogo()
-
-                if evento.type == pygame.MOUSEBUTTONDOWN:
-                    if evento.button == 1: 
-                        if self.estado_jogo_atual == "SELECAO_MATERIA" and self.tela_ativa_selecao_materia:
-                            self.tela_ativa_selecao_materia.processar_clique(evento.pos) 
-                        
-                        elif self.estado_jogo_atual == "JOGANDO":
-                            if self.tipo_confirmacao_pendente:
-                                self.botao_popup_confirmar.tratar_clique()
-                                self.botao_popup_cancelar.tratar_clique()
-                            elif self.objeto_pergunta_atual:
-                                if self.botao_dica.tratar_clique(): pass
-                                elif self.botao_50_50.tratar_clique(): pass
-                                elif self.botao_pular.tratar_clique(): pass
-                                else: 
-                                    for botao_alt in self.botoes_alternativas:
-                                        if botao_alt.tratar_clique(): break 
-                        
-                        elif self.estado_jogo_atual == "FIM_DE_JOGO":
-                            self.botao_final_jogar_novamente.tratar_clique()
-                            self.botao_final_sair.tratar_clique()
-                    
-                    if self.estado_jogo_atual == "SELECAO_MATERIA" and self.tela_ativa_selecao_materia and (evento.button == 4 or evento.button == 5):
-                        self.tela_ativa_selecao_materia.tratar_evento_scroll(evento)
-            
-            if self.interface_grafica.imagem_fundo:
-                self.tela_principal.blit(self.interface_grafica.imagem_fundo, (0,0))
-            else:
-                self.tela_principal.fill(Tema.CORES['fundo_padrao'])
-
-
-            if self.estado_jogo_atual == "SELECAO_MATERIA" and self.tela_ativa_selecao_materia:
-                self.tela_ativa_selecao_materia.desenhar_tela(self.tela_principal)
-            elif self.estado_jogo_atual == "JOGANDO":
-                if self.objeto_pergunta_atual:
-                    self.interface_grafica.desenhar_caixa_pergunta(self.tela_principal, self.objeto_pergunta_atual.enunciado)
-                    for i, botao_alt in enumerate(self.botoes_alternativas):
-                        botao_alt.desenhar(self.tela_principal)
-                        if i in self.indices_respostas_eliminadas_na_pergunta and not botao_alt.habilitado:
-                            overlay_eliminada_surf = pygame.Surface((botao_alt.rect.width, botao_alt.rect.height), pygame.SRCALPHA)
-                            overlay_eliminada_surf.fill(Tema.CORES['resposta_eliminada_overlay'])
-                            self.tela_principal.blit(overlay_eliminada_surf, botao_alt.rect.topleft)
-                    self.botao_dica.desenhar(self.tela_principal)
-                    self.botao_50_50.desenhar(self.tela_principal)
-                    self.botao_pular.desenhar(self.tela_principal)
-                    self.interface_grafica.desenhar_info_pontuacao(self.tela_principal, self.pontuacao_rodada)
-                    if self.dica_pergunta_ativa and self.objeto_pergunta_atual.dica:
-                        self.interface_grafica.desenhar_balao_dica(self.tela_principal, self.objeto_pergunta_atual.dica, self.botao_dica.rect)
+    def checar_eventos(self, evento):
+        if evento.type == pygame.MOUSEBUTTONDOWN:
+            if evento.button == 1: 
+                if self.estado_jogo_atual == "SELECAO_MATERIA" and self.tela_ativa_selecao_materia:
+                    self.tela_ativa_selecao_materia.processar_clique(evento.pos) 
+                
+                elif self.estado_jogo_atual == "JOGANDO":
                     if self.tipo_confirmacao_pendente:
-                        texto_popup_principal = "Tem certeza?"
-                        if self.tipo_confirmacao_pendente == "resposta" and self.indice_resposta_selecionada_para_confirmacao != -1:
-                            try:
-                                alt_txt_selecionado = self.objeto_pergunta_atual.alternativas[self.indice_resposta_selecionada_para_confirmacao]
-                                max_len_alt_popup = 35
-                                if len(alt_txt_selecionado) > max_len_alt_popup: alt_txt_selecionado = alt_txt_selecionado[:max_len_alt_popup-3] + "..."
-                                texto_popup_principal = f"Confirma: '{alt_txt_selecionado}'?"
-                            except IndexError: texto_popup_principal = "Confirmar esta resposta?"
-                        elif self.tipo_confirmacao_pendente == "pular":
-                            texto_popup_principal = "Deseja realmente pular esta pergunta?"
-                        self.interface_grafica.desenhar_popup_confirmacao(self.tela_principal, [self.botao_popup_confirmar, self.botao_popup_cancelar], texto_popup_principal)
-                else: 
-                    fonte_carregando_jogo = self.interface_grafica.get_fonte_ui('grande')
-                    surface_carregando_jogo = fonte_carregando_jogo.render("Carregando Pergunta...", True, Tema.CORES['texto_principal'])
-                    self.tela_principal.blit(surface_carregando_jogo, ((LARGURA_TELA - surface_carregando_jogo.get_width())//2, ALTURA_TELA//2))
-            elif self.estado_jogo_atual == "FIM_DE_JOGO":
-                self.interface_grafica.desenhar_tela_final(self.tela_principal, self.pontuacao_rodada, [self.botao_final_jogar_novamente, self.botao_final_sair], self.texto_final_resposta_correta)
+                        self.botao_popup_confirmar.tratar_clique()
+                        self.botao_popup_cancelar.tratar_clique()
+                    elif self.objeto_pergunta_atual:
+                        if self.botao_dica.tratar_clique(): pass
+                        elif self.botao_50_50.tratar_clique(): pass
+                        elif self.botao_pular.tratar_clique(): pass
+                        else: 
+                            for botao_alt in self.botoes_alternativas:
+                                if botao_alt.tratar_clique(): break 
+                
+                elif self.estado_jogo_atual == "FIM_DE_JOGO":
+                    self.botao_final_jogar_novamente.tratar_clique()
+                    self.botao_final_sair.tratar_clique()
+            
+            if self.estado_jogo_atual == "SELECAO_MATERIA" and self.tela_ativa_selecao_materia and (evento.button == 4 or evento.button == 5):
+                self.tela_ativa_selecao_materia.tratar_evento_scroll(evento)
+        if evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
+            from menu_tela_aluno import MenuTelaAluno 
+            self.gerenciador.trocar_tela(MenuTelaAluno)
+    def atualizar(self):
+        pos_mouse_atual = pygame.mouse.get_pos()
 
-            self.interface_grafica.desenhar_notificacao_flutuante(self.tela_principal)
-            pygame.display.flip()
+        if self.estado_jogo_atual == "SELECAO_MATERIA":
+            if self.tela_ativa_selecao_materia:
+                self.tela_ativa_selecao_materia.atualizar_hover_botoes(pos_mouse_atual)
+        elif self.estado_jogo_atual == "JOGANDO":
+            if self.tipo_confirmacao_pendente: 
+                self.botao_popup_confirmar.verificar_hover(pos_mouse_atual)
+                self.botao_popup_cancelar.verificar_hover(pos_mouse_atual)
+            elif self.objeto_pergunta_atual: 
+                for botao_alt in self.botoes_alternativas: botao_alt.verificar_hover(pos_mouse_atual)
+                self.botao_dica.verificar_hover(pos_mouse_atual)
+                self.botao_50_50.verificar_hover(pos_mouse_atual)
+                self.botao_pular.verificar_hover(pos_mouse_atual)
+        elif self.estado_jogo_atual == "FIM_DE_JOGO":
+            self.botao_final_jogar_novamente.verificar_hover(pos_mouse_atual)
+            self.botao_final_sair.verificar_hover(pos_mouse_atual)
+
+    def exibir(self, janela):
+        if self.interface_grafica.imagem_fundo:
+            janela.blit(self.interface_grafica.imagem_fundo, (0,0))
+        else:
+            janela.fill(Tema.CORES['fundo_padrao'])
+
+
+        if self.estado_jogo_atual == "SELECAO_MATERIA" and self.tela_ativa_selecao_materia:
+            self.tela_ativa_selecao_materia.desenhar_tela(janela)
+        elif self.estado_jogo_atual == "JOGANDO":
+            if self.objeto_pergunta_atual:
+                self.interface_grafica.desenhar_caixa_pergunta(janela, self.objeto_pergunta_atual.enunciado)
+                for i, botao_alt in enumerate(self.botoes_alternativas):
+                    botao_alt.desenhar(janela)
+                    if i in self.indices_respostas_eliminadas_na_pergunta and not botao_alt.habilitado:
+                        overlay_eliminada_surf = pygame.Surface((botao_alt.rect.width, botao_alt.rect.height), pygame.SRCALPHA)
+                        overlay_eliminada_surf.fill(Tema.CORES['resposta_eliminada_overlay'])
+                        janela.blit(overlay_eliminada_surf, botao_alt.rect.topleft)
+                self.botao_dica.desenhar(janela)
+                self.botao_50_50.desenhar(janela)
+                self.botao_pular.desenhar(janela)
+                self.interface_grafica.desenhar_info_pontuacao(janela, self.pontuacao_rodada)
+                if self.dica_pergunta_ativa and self.objeto_pergunta_atual.dica:
+                    self.interface_grafica.desenhar_balao_dica(janela, self.objeto_pergunta_atual.dica, self.botao_dica.rect)
+                if self.tipo_confirmacao_pendente:
+                    texto_popup_principal = "Tem certeza?"
+                    if self.tipo_confirmacao_pendente == "resposta" and self.indice_resposta_selecionada_para_confirmacao != -1:
+                        try:
+                            alt_txt_selecionado = self.objeto_pergunta_atual.alternativas[self.indice_resposta_selecionada_para_confirmacao]
+                            max_len_alt_popup = 35
+                            if len(alt_txt_selecionado) > max_len_alt_popup: alt_txt_selecionado = alt_txt_selecionado[:max_len_alt_popup-3] + "..."
+                            texto_popup_principal = f"Confirma: '{alt_txt_selecionado}'?"
+                        except IndexError: texto_popup_principal = "Confirmar esta resposta?"
+                    elif self.tipo_confirmacao_pendente == "pular":
+                        texto_popup_principal = "Deseja realmente pular esta pergunta?"
+                    self.interface_grafica.desenhar_popup_confirmacao(janela, [self.botao_popup_confirmar, self.botao_popup_cancelar], texto_popup_principal)
+            else: 
+                fonte_carregando_jogo = self.interface_grafica.get_fonte_ui('grande')
+                surface_carregando_jogo = fonte_carregando_jogo.render("Carregando Pergunta...", True, Tema.CORES['texto_principal'])
+                janela.blit(surface_carregando_jogo, ((LARGURA_JANELA - surface_carregando_jogo.get_width())//2, ALTURA_JANELA//2))
+        elif self.estado_jogo_atual == "FIM_DE_JOGO":
+            self.interface_grafica.desenhar_tela_final(janela, self.pontuacao_rodada, [self.botao_final_jogar_novamente, self.botao_final_sair], self.texto_final_resposta_correta)
+
+        self.interface_grafica.desenhar_notificacao_flutuante(janela)
 
         self.gerenciador_banco.desconectar_banco()
-        pygame.quit()

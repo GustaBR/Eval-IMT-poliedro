@@ -1,5 +1,5 @@
 import pygame
-from tema.tema_visual import Tema
+from jogo_perguntas.tema.tema_visual import Tema
 
 class Pergunta:
     def __init__(self, id_questao, enunciado, alternativas, indice_correta, dica=""):
