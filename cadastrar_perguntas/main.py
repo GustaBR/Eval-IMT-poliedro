@@ -50,7 +50,7 @@ def cadastrar_questao():
         mapa_dificuldade = {'Fácil': 'F', 'Médio': 'M', 'Difícil': 'D'}
         id_materia = materias[materia_str]
         
-        sql_q = "INSERT INTO questoes (difQuest, enuncQuest, idMateria) VALUES (%s, %s, %s)"
+        sql_q = "INSERT INTO questoes (difQuest, enuncQuest, nomeMateria) VALUES (%s, %s, %s)"
         cursor.execute(sql_q, (mapa_dificuldade[dificuldade_str], pergunta, id_materia))
         id_questao = cursor.lastrowid
         
