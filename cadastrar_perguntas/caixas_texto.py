@@ -1,8 +1,4 @@
-from dropdown import *
-
-def desenhar_sombra(superficie, retangulo, deslocamento=3, raio_borda=10):
-    ret_sombra = pygame.Rect(retangulo.x + deslocamento, retangulo.y + deslocamento, retangulo.width, retangulo.height)
-    pygame.draw.rect(superficie, COR_SOMBRA, ret_sombra, border_radius=raio_borda)
+from cadastrar_perguntas.dropdown import *
 
 class CaixaTextoComPrefixo:
     def __init__(self, x, y, w, h, fonte, dica_texto="", prefixo=""):
@@ -23,12 +19,26 @@ class CaixaTextoComPrefixo:
         self.prefixo = prefixo
         self.prefixo_surf, self.prefixo_ret = fonte.render(prefixo, COR_TEXTO_NORMAL)
         self.inicio_texto_x = self.margem + self.prefixo_ret.width + 8
-    def obter_texto(self): return self.texto
-    def definir_texto(self, texto): self.texto = texto; self.cursor_pos = len(texto)
+
+    def desenhar_sombra(superficie, retangulo, deslocamento=3, raio_borda=10):
+        ret_sombra = pygame.Rect(retangulo.x + deslocamento, retangulo.y + deslocamento, retangulo.width, retangulo.height)
+        pygame.draw.rect(superficie, COR_SOMBRA, ret_sombra, border_radius=raio_borda)
+
+    def obter_texto(self):
+        return self.texto
+
+    def definir_texto(self, texto):
+        self.texto = texto
+        self.cursor_pos = len(texto)
+
     def _executar_backspace(self):
-        if self.cursor_pos > 0: self.texto = self.texto[:self.cursor_pos - 1] + self.texto[self.cursor_pos:]; self.cursor_pos -= 1
+        if self.cursor_pos > 0:
+            self.texto = self.texto[:self.cursor_pos - 1] + self.texto[self.cursor_pos:]
+            self.cursor_pos -= 1
+
     def tratar_evento(self, evento):
-        if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1: self.ativo = self.retangulo.collidepoint(evento.pos)
+        if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+            self.ativo = self.retangulo.collidepoint(evento.pos)
         if self.ativo and evento.type == pygame.KEYDOWN:
             if evento.key == pygame.K_BACKSPACE: self.backspace_pressionado = True; self.backspace_timer = 0; self._executar_backspace()
             elif evento.key == pygame.K_LEFT: self.cursor_pos = max(0, self.cursor_pos - 1)

@@ -1,8 +1,7 @@
 import pygame
 import pygame.freetype
 import math
-from config import *
-from caixas_texto import CaixaTextoComPrefixo, CaixaTextoModerna
+from cadastrar_perguntas.config import *
 
 def desenhar_sombra(superficie, retangulo, deslocamento=3, raio_borda=10):
     ret_sombra = pygame.Rect(retangulo.x + deslocamento, retangulo.y + deslocamento, retangulo.width, retangulo.height)

@@ -1,5 +1,5 @@
 import mysql.connector
-from config import CONFIG_BD
+from cadastrar_perguntas.config import CONFIG_BD
 
 def obter_conexao_bd():
     """Tenta criar e retornar uma conexão com o banco. Lança exceção em caso de erro."""

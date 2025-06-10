@@ -5,6 +5,7 @@ from sys import exit
 from cadastrar_usuarios.componentes.cadastrar_usuarios_tela import CadastrarUsuariosTela
 from cadastrar_materias.cadastrar_materias_tela import CadastrarMateriasTela
 from rank.ranking_tela import RankingTela
+from cadastrar_perguntas.cadastrar_perguntas_tela import CadastrarPerguntasTela
 
 class MenuTelaProfessor():
     def __init__(self, gerenciador):
@@ -29,7 +30,8 @@ class MenuTelaProfessor():
             cor_padrao=config.VINHO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
-            fonte=config.fonte_botao
+            fonte=config.fonte_botao,
+            acao= lambda: self.gerenciador.trocar_tela(CadastrarPerguntasTela)
             )
 
         ## Botão Usuários
