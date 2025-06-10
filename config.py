@@ -78,8 +78,8 @@ def criar_fontes():
     # Fontes
     import pygame
     global fonte_botao, fonte_titulo
-    fonte_botao = pygame.font.Font("assets/IrishGrover-Regular.ttf", fonte_principal_tamanho_base)
-    fonte_titulo = pygame.font.Font("assets/IrishGrover-Regular.ttf", fonte_principal_tamanho_titulo)
+    fonte_botao = pygame.font.Font("IrishGrover-Regular.ttf", fonte_principal_tamanho_base)
+    fonte_titulo = pygame.font.Font("IrishGrover-Regular.ttf", fonte_principal_tamanho_titulo)
 
 def criar_fontes_login(size, bold=False, italic=False):
     return pygame.font.SysFont("Segoe UI", size, bold=bold, italic=italic)
