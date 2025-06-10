@@ -5,7 +5,6 @@ from config import Tema_Poliedro, fonte_negrito, fonte_regular, icone_usuario, i
 from input_box import InputBox
 from botao_login import BotaoLogin
 
-
 class LoginTela:
     def __init__(self, gerenciador):
         self.gerenciador = gerenciador

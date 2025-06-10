@@ -3,6 +3,7 @@ import config
 from botao_menu import BotaoMenu
 from sys import exit
 from jogo_perguntas.funcionamento_jogo import JogoTela
+from estatisticas_tela import EstatisticasTela
 
 class MenuTelaAluno(): 
     def __init__(self, gerenciador):
@@ -37,7 +38,8 @@ class MenuTelaAluno():
             cor_padrao=config.AZUL_CLARO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
-            fonte=config.fonte_botao
+            fonte=config.fonte_botao,
+            acao=lambda: self.gerenciador.trocar_tela(EstatisticasTela)
         )
 
         ## Botão Configurações

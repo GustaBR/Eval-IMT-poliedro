@@ -4,6 +4,7 @@ class GerenciadorTelas:
     def __init__(self):
         self.telas = {}
         self.tela_atual = None
+        self.usuario = None
 
     def trocar_tela(self, classe_tela):
         if classe_tela not in self.telas:
