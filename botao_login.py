@@ -114,8 +114,7 @@ class BotaoLogin:
             cursor = conn.cursor()
 
             # Tenta logar como aluno
-            query_aluno = "SELECT idAluno, nomeAluno, pontuacao," + \
-                "partJogadas, partGanhas FROM aluno WHERE mailAluno = %s AND senhaAluno = %s"
+            query_aluno = "SELECT idAluno, nomeAluno, pontuacao FROM aluno WHERE mailAluno = %s AND senhaAluno = %s"
             cursor.execute(query_aluno, (usuario, senha))
             resultado = cursor.fetchone()
 
