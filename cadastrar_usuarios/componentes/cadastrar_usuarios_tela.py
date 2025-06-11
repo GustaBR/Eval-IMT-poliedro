@@ -90,8 +90,8 @@ class CadastrarUsuariosTela:
                 sql = "INSERT INTO aluno (nomeAluno, mailAluno, senhaAluno, pontuacao) VALUES (%s, %s, %s, 0)"
                 cursor.execute(sql, (nome, email_completo, senha))
             else:
-                sql = "INSERT INTO professor (nomeProf, mailProf, senhaProf, materia) VALUES (%s, %s, %s, %s)"
-                cursor.execute(sql, (nome, email_completo, senha, materia))
+                sql = "INSERT INTO professor (nomeProf, mailProf, senhaProf, idMateria) VALUES (%s, %s, %s, %s)"
+                cursor.execute(sql, (nome, email_completo, senha, 1))
             conexao.commit()
             self.msg = f"{tipo.capitalize()} cadastrado com sucesso!"
             for c in self.campos.values():
