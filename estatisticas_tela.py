@@ -8,7 +8,7 @@ class EstatisticasTela:
 
     def carregar_estatisticas(self, usuario):
         estatisticas = {
-            "Pontuação": usuario.pontuacao
+            "Pontuação": f"R${usuario.pontuacao_formatada()}"
         }
         return estatisticas
     
@@ -34,6 +34,6 @@ class EstatisticasTela:
         for i, (estatistica, valor) in enumerate(estatisticas.items()):
             texto = fonte.render(f"{estatistica}: {valor}", True, config.PRETO)
             texto_rect = texto.get_rect()
-            texto_rect.center = (config.LARGURA_JANELA//2, int((50 + i * (texto.get_height() + 20)) * config.ALTURA_JANELA / 768))
+            texto_rect.center = (config.LARGURA_JANELA//2, config.ALTURA_JANELA//2)
             janela.blit(texto, texto_rect)
                     

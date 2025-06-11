@@ -13,7 +13,7 @@ class MenuTelaAluno():
         ## Botão Jogar
         self.botao_jogar = BotaoMenu(
             texto="Jogar",
-            pos=config.figma_para_tela(51, 453),
+            pos=config.figma_para_tela(51, 553),
             cor_padrao=config.LARANJA,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
@@ -21,19 +21,9 @@ class MenuTelaAluno():
             acao=lambda: self.gerenciador.trocar_tela(JogoTela)
             )
 
-        ## Botão Questões
-        self.botao_questoes = BotaoMenu(
-            texto="Questões",
-            pos=config.figma_para_tela(51, 560),
-            cor_padrao=config.VINHO,
-            cor_texto=config.PRETO,
-            cor_hover=config.BRANCO,
-            fonte=config.fonte_botao
-            )
-
         ## Botão Estatísticas
         self.botao_estatisticas = BotaoMenu(
-            texto="Estatísticas",
+            texto="Pontuação",
             pos=config.figma_para_tela(51, 667),
             cor_padrao=config.AZUL_CLARO,
             cor_texto=config.PRETO,
@@ -42,20 +32,10 @@ class MenuTelaAluno():
             acao=lambda: self.gerenciador.trocar_tela(EstatisticasTela)
         )
 
-        ## Botão Configurações
-        self.botao_configuracoes = BotaoMenu(
-            texto="Configurações",
-            pos=config.figma_para_tela(51, 774),
-            cor_padrao=config.SALMAO,
-            cor_texto=config.PRETO,
-            cor_hover=config.BRANCO,
-            fonte=config.fonte_botao
-        )
-
         ## Botão Sair
         self.botao_sair = BotaoMenu(
             texto="Sair",
-            pos=config.figma_para_tela(51, 881),
+            pos=config.figma_para_tela(51, 781),
             cor_padrao=config.VERMELHO,
             cor_texto=config.PRETO,
             cor_hover=config.BRANCO,
@@ -63,8 +43,8 @@ class MenuTelaAluno():
             acao= lambda: (pygame.quit(), exit())
         )
 
-        self.botoes = [self.botao_jogar, self.botao_questoes,
-        self.botao_estatisticas, self.botao_configuracoes, self.botao_sair]
+        self.botoes = [self.botao_jogar,
+        self.botao_estatisticas, self.botao_sair]
 
         # Logo EVAL
         self.letras_logo = [

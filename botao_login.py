@@ -114,17 +114,21 @@ class BotaoLogin:
             cursor = conn.cursor()
 
             # Tenta logar como aluno
-            query_aluno = "SELECT idAluno, nomeAluno, pontuacao FROM aluno WHERE mailAluno = %s AND senhaAluno = %s"
+            query_aluno = "SELECT idAluno, nomeAluno, pontuacao," + \
+                "partJogadas, partGanhas FROM aluno WHERE mailAluno = %s AND senhaAluno = %s"
             cursor.execute(query_aluno, (usuario, senha))
             resultado = cursor.fetchone()
-            print(resultado)
 
             if resultado:
                 self.usuario_tipo = "aluno"
                 if som_correto:
                     som_correto.play()
                 conn.close()
-                self.tela.gerenciador.usuario = Aluno(id=resultado[0], nome=resultado[1], pontuacao=resultado[2])
+                self.tela.gerenciador.usuario = Aluno(
+                    id=resultado[0],
+                    nome=resultado[1],
+                    pontuacao=resultado[2] # Dinheiro ganho
+                    )
                 self.tela.gerenciador.trocar_tela(MenuTelaAluno)
 
             # Se não for aluno, tenta professor

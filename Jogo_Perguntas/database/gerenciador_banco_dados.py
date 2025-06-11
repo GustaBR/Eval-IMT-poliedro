@@ -110,3 +110,21 @@ class GerenciadorBancoPerguntas:
         except mysql.connector.Error as err:
             print(f"Erro SQL ao obter perguntas para '{nome_materia}': {err}")
         return perguntas_carregadas
+    
+    
+    def atualizar_pontuacao(self, usuario, pontuacao_a_adicionar):
+        if not self.conexao or not self.conexao.is_connected():
+            self._conectar_banco()
+            if not self.conexao or not self.conexao.is_connected():
+                print("Conexão falhou")
+
+        nova_pontuacao = usuario.pontuacao + pontuacao_a_adicionar
+        id_aluno = usuario.id
+            
+        try:
+            with self.conexao.cursor() as cursor:
+                cursor.execute("UPDATE aluno SET pontuacao = %s WHERE idAluno = %s", (nova_pontuacao, id_aluno)) 
+            usuario.pontuacao = nova_pontuacao
+            self.conexao.commit()
+        except mysql.connector.Error as err:
+            print(f"say smth")

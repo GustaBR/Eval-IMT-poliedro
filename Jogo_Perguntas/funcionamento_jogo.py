@@ -37,6 +37,14 @@ class JogoTela:
         self.indice_resposta_selecionada_para_confirmacao = -1
         self.texto_final_resposta_correta = None
         self.jogo_rodando = False
+        self.valor_questoes = {
+            0: 1000,
+            5: 5000,
+            6: 10000,
+            10: 50000,
+            11: 100000,
+            14: 600000
+        }
 
     def _inicializar_botoes_comuns_jogo(self):
         self.botoes_alternativas = []
@@ -154,6 +162,7 @@ class JogoTela:
 
     def _carregar_proxima_pergunta_rodada(self):
         if self.indice_pergunta_rodada < len(self.lista_perguntas_rodada_atual):
+            print(self.indice_pergunta_rodada, len(self.lista_perguntas_rodada_atual))
             self.objeto_pergunta_atual = self.lista_perguntas_rodada_atual[self.indice_pergunta_rodada]
             self.indices_respostas_eliminadas_na_pergunta = []
             self.dica_pergunta_ativa = False
@@ -172,11 +181,13 @@ class JogoTela:
         else: 
             self.estado_jogo_atual = "FIM_DE_JOGO"
             msg_fim_rodada = "Fim da rodada de perguntas!"
-            if self.pontuacao_rodada == len(self.lista_perguntas_rodada_atual) * 1000 and len(self.lista_perguntas_rodada_atual) > 0:
+            if self.indice_pergunta_rodada == len(self.lista_perguntas_rodada_atual) and len(self.lista_perguntas_rodada_atual) > 0:
                 msg_fim_rodada = f"Parabéns! Acertou todas as {len(self.lista_perguntas_rodada_atual)} perguntas!"
                 self.interface_grafica.exibir_notificacao("Rodada perfeita!", "sucesso", 3000)
+                self.gerenciador_banco.atualizar_pontuacao(self.gerenciador.usuario, self.pontuacao_rodada)
             else:
                 self.interface_grafica.exibir_notificacao("Rodada concluída!", "info", 3000)
+                self.gerenciador_banco.atualizar_pontuacao(self.gerenciador.usuario, self.pontuacao_rodada)
             self.texto_final_resposta_correta = msg_fim_rodada
 
 
@@ -217,13 +228,20 @@ class JogoTela:
 
     def _validar_resposta_escolhida(self, indice_resposta_jogador):
         if self.objeto_pergunta_atual and indice_resposta_jogador == self.objeto_pergunta_atual.indice_correta:
-            self.pontuacao_rodada += 1000
+            for rodada, valor in sorted(self.valor_questoes.items(), reverse=True):
+                if self.indice_pergunta_rodada >= rodada:
+                    valor_ganho = valor
+                    break
+            self.pontuacao_rodada += valor_ganho
             self.interface_grafica.exibir_notificacao("Resposta Correta!", "sucesso")
             self.indice_pergunta_rodada += 1
             pygame.time.wait(1200) 
             self._carregar_proxima_pergunta_rodada()
         else: 
             self.interface_grafica.exibir_notificacao("Resposta Incorreta!", "erro")
+            self.pontuacao_rodada = self.pontuacao_rodada//2
+            self.gerenciador_banco.atualizar_pontuacao(self.gerenciador.usuario, self.pontuacao_rodada)
+            print("teste maluco")
             if self.objeto_pergunta_atual:
                 self.texto_final_resposta_correta = self.objeto_pergunta_atual.alternativas[self.objeto_pergunta_atual.indice_correta]
             else:
